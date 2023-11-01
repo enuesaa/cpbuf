@@ -15,6 +15,7 @@ func main() {
 		},
 	}
 	app.AddCommand(cli.CreateCopyCmd())
+	app.AddCommand(cli.CreatePasteCmd())
 
 	// disable default
 	app.SetHelpCommand(&cobra.Command{Hidden: true})
