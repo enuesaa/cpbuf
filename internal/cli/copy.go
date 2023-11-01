@@ -28,7 +28,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			}
 		},
 	}
-	cmd.Flags().BoolP("interactive", "-i", false, "interactive")
+	// cmd.Flags().BoolP("interactive", "-i", false, "interactive")
 
 	return cmd
 }

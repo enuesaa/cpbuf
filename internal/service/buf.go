@@ -2,6 +2,7 @@ package service
 
 import (
 	"path/filepath"
+	"slices"
 
 	"github.com/enuesaa/cpbuf/internal/repository"
 )
@@ -43,3 +44,49 @@ func (srv *BufSrv) CopyFileToBufDir(filename string) error {
 	return srv.repos.Fshome.CopyFile(filename, dstPath)
 }
 
+func (srv *BufSrv) PasteFilesToWorkDir() error {
+	bufDirPath, err := srv.repos.Fshome.GetResgistryPath(srv.getBufDirName())
+	if err != nil {
+		return err
+	}
+	filenames, err := srv.repos.Fshome.ListFiles(bufDirPath)
+	for _, filename := range filenames {
+		if err := srv.CopyFileToBufDir(filename); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (srv *BufSrv) ExtractSameFilenamesInWorkDir() ([]string, error) {
+	workdirPath, err := srv.repos.Fshome.Workdir()
+	if err != nil {
+		return make([]string, 0), err
+	}
+
+	workdirFilenames, err := srv.repos.Fshome.ListFiles(workdirPath)
+	if err != nil {
+		return make([]string, 0), err
+	}
+
+	bufDirPath, err := srv.repos.Fshome.GetResgistryPath(srv.getBufDirName())
+	bufDirFilenames, err := srv.repos.Fshome.ListFiles(bufDirPath)
+
+	duplicates := make([]string, 0)
+	for _, filename := range bufDirFilenames {
+		if slices.Contains(workdirFilenames, filename) {
+			duplicates = append(duplicates, filename)
+		}
+	}
+
+	return duplicates, nil
+}
+
+func (srv *BufSrv) ListFilesInWorkDir() ([]string, error) {
+	workdirPath, err := srv.repos.Fshome.Workdir()
+	if err != nil {
+		return make([]string, 0), err
+	}
+
+	return srv.repos.Fshome.ListFiles(workdirPath)
+}
