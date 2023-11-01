@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/enuesaa/cpbuf/internal/cli"
 	"github.com/spf13/cobra"
 )
 
@@ -13,6 +14,7 @@ func main() {
 			cmd.Help()
 		},
 	}
+	app.AddCommand(cli.CreateCopyCmd())
 
 	// disable default
 	app.SetHelpCommand(&cobra.Command{Hidden: true})
