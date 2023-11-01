@@ -1,2 +1,4 @@
 # cpbuf
-A CLI tool to copy and paste files for me. While `cp` would copy and paste with one time, `cpbuf` uses tmp dir ... meaning stateful.
+A CLI tool to copy and paste files. 
+
+While `cp` would copy and paste in one-time operation, `cpbuf` is stateful.
