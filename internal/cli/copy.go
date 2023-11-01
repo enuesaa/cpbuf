@@ -3,10 +3,11 @@ package cli
 import (
 	"fmt"
 
+	"github.com/enuesaa/cpbuf/internal/repository"
 	"github.com/spf13/cobra"
 )
 
-func CreateCopyCmd() *cobra.Command {
+func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "copy <filename>",
 		Short: "copy file to tmp dir",
