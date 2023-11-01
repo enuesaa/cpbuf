@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 )
@@ -10,6 +11,8 @@ type FshomeRepositoryInterface interface {
 	IsRegistryExist(registryName string) bool
 	CreateRegistry(registryName string) error
 	DeleteRegistry(registryName string) error
+	GetResgistryPath(registryName string) (string, error)
+	CopyFile(srcPath string, dstPath string) error
 	IsFileExist(registryName string, path string) bool
 	WriteFile(registryName string, path string, content string) error
 	ReadFile(registryName string, path string) (string, error)
@@ -25,6 +28,14 @@ func (repo *FshomeRepository) isFileOrDirExist(path string) bool {
 
 func (repo *FshomeRepository) homedir() (string, error) {
 	return os.UserHomeDir()
+}
+
+func (repo *FshomeRepository) GetResgistryPath(registryName string) (string, error) {
+	homedir, err := repo.homedir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(homedir, registryName), nil
 }
 
 func (repo *FshomeRepository) IsRegistryExist(registryName string) bool {
@@ -52,6 +63,23 @@ func (repo *FshomeRepository) DeleteRegistry(registryName string) error {
 	}
 	path := filepath.Join(homedir, registryName)
 	return os.RemoveAll(path)
+}
+
+func (repo *FshomeRepository) CopyFile(srcPath string, dstPath string) error {
+	srcF, err := os.Open(srcPath)
+    if err != nil {
+        return err
+    }
+    defer srcF.Close()
+
+    dstF, err := os.Create(dstPath)
+    if err != nil {
+        return err
+    }
+    defer dstF.Close()
+
+    _, err = io.Copy(dstF, srcF)
+	return err
 }
 
 func (repo *FshomeRepository) IsFileExist(registryName string, path string) bool {

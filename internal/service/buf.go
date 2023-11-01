@@ -1,6 +1,10 @@
 package service
 
-import "github.com/enuesaa/cpbuf/internal/repository"
+import (
+	"path/filepath"
+
+	"github.com/enuesaa/cpbuf/internal/repository"
+)
 
 type BufSrv struct {
 	repos repository.Repos
@@ -30,4 +34,12 @@ func (srv *BufSrv) DeleteBufDir() error {
 	return nil
 }
 
+func (srv *BufSrv) CopyFileToBufDir(filename string) error {
+	registryPath, err := srv.repos.Fshome.GetResgistryPath(srv.getBufDirName())
+	if err != nil {
+		return err
+	}
+	dstPath := filepath.Join(registryPath, filename)
+	return srv.repos.Fshome.CopyFile(filename, dstPath)
+}
 
