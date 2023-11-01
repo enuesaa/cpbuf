@@ -44,6 +44,15 @@ func (srv *BufSrv) CopyFileToBufDir(filename string) error {
 	return srv.repos.Fshome.CopyFile(filename, dstPath)
 }
 
+func (srv *BufSrv) PasteFileToWorkDir(filename string) error {
+	registryPath, err := srv.repos.Fshome.GetResgistryPath(srv.getBufDirName())
+	if err != nil {
+		return err
+	}
+	filePathInBufDir := filepath.Join(registryPath, filename)
+	return srv.repos.Fshome.CopyFile(filePathInBufDir, filename)
+}
+
 func (srv *BufSrv) PasteFilesToWorkDir() error {
 	bufDirPath, err := srv.repos.Fshome.GetResgistryPath(srv.getBufDirName())
 	if err != nil {
@@ -51,11 +60,19 @@ func (srv *BufSrv) PasteFilesToWorkDir() error {
 	}
 	filenames, err := srv.repos.Fshome.ListFiles(bufDirPath)
 	for _, filename := range filenames {
-		if err := srv.CopyFileToBufDir(filename); err != nil {
+		if err := srv.PasteFileToWorkDir(filename); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func (srv *BufSrv) ListFilenames() ([]string, error) {
+	bufDirPath, err := srv.repos.Fshome.GetResgistryPath(srv.getBufDirName())
+	if err != nil {
+		return make([]string, 0), err
+	}
+	return srv.repos.Fshome.ListFiles(bufDirPath)
 }
 
 func (srv *BufSrv) ExtractSameFilenamesInWorkDir() ([]string, error) {
@@ -70,6 +87,9 @@ func (srv *BufSrv) ExtractSameFilenamesInWorkDir() ([]string, error) {
 	}
 
 	bufDirPath, err := srv.repos.Fshome.GetResgistryPath(srv.getBufDirName())
+	if err != nil {
+		return make([]string, 0), err
+	}
 	bufDirFilenames, err := srv.repos.Fshome.ListFiles(bufDirPath)
 
 	duplicates := make([]string, 0)
