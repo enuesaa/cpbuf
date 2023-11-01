@@ -10,7 +10,7 @@ import (
 func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "paste",
-		Short: "paste file from tmp dir",
+		Short: "paste files",
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("paste files.")
 
@@ -19,6 +19,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 			// remove tmp dir
 		},
 	}
+	cmd.Flags().Bool("keep", false, "do not clear buf dir")
 
 	return cmd
 }

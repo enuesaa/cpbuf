@@ -19,6 +19,7 @@ func main() {
 	}
 	app.AddCommand(cli.CreateCopyCmd(repos))
 	app.AddCommand(cli.CreatePasteCmd(repos))
+	app.AddCommand(cli.CreateClearCmd(repos))
 
 	// disable default
 	app.SetHelpCommand(&cobra.Command{Hidden: true})

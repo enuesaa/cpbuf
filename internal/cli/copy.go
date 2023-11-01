@@ -10,7 +10,7 @@ import (
 func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "copy <filename>",
-		Short: "copy file to tmp dir",
+		Short: "copy file to buf dir",
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("copy files.")
 
@@ -18,7 +18,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			// cp <filename>
 		},
 	}
-	// -i interactive
+	cmd.Flags().BoolP("interactive", "-i", false, "interactive")
 
 	return cmd
 }
