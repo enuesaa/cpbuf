@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/enuesaa/cpbuf/internal/repository"
+	"github.com/enuesaa/cpbuf/internal/service"
 	"github.com/spf13/cobra"
 )
 
@@ -12,9 +13,12 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 		Use:   "copy <filename>",
 		Short: "copy file to buf dir",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("copy files.")
+			bufSrv := service.NewBufSrv(repos)
+			if err := bufSrv.CreateBufDir(); err != nil {
+				fmt.Printf("error: %s\n", err.Error())
+				return
+			}
 
-			// create tmp dir
 			// cp <filename>
 		},
 	}

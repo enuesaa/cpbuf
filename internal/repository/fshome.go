@@ -9,6 +9,7 @@ import (
 type FshomeRepositoryInterface interface {
 	IsRegistryExist(registryName string) bool
 	CreateRegistry(registryName string) error
+	DeleteRegistry(registryName string) error
 	IsFileExist(registryName string, path string) bool
 	WriteFile(registryName string, path string, content string) error
 	ReadFile(registryName string, path string) (string, error)
@@ -42,6 +43,15 @@ func (repo *FshomeRepository) CreateRegistry(registryName string) error {
 	}
 	path := filepath.Join(homedir, registryName)
 	return os.Mkdir(path, 0755)
+}
+
+func (repo *FshomeRepository) DeleteRegistry(registryName string) error {
+	homedir, err := repo.homedir()
+	if err != nil {
+		return err
+	}
+	path := filepath.Join(homedir, registryName)
+	return os.RemoveAll(path)
 }
 
 func (repo *FshomeRepository) IsFileExist(registryName string, path string) bool {
