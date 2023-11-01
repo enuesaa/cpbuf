@@ -13,8 +13,12 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 		Short: "copy file to tmp dir",
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("copy files.")
+
+			// create tmp dir
+			// cp <filename>
 		},
 	}
+	// -i interactive
 
 	return cmd
 }
