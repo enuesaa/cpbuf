@@ -12,7 +12,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "copy <filename>",
 		Short: "copy file to buf dir",
-		Args: cobra.MinimumNArgs(1),
+		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			filename := args[0]
 

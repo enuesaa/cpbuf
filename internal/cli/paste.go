@@ -33,7 +33,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 				fmt.Printf("error: %s\n", err.Error())
 				return
 			}
-			
+
 			if err := bufSrv.DeleteBufDir(); err != nil {
 				fmt.Printf("error: %s\n", err.Error())
 			}

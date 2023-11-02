@@ -20,7 +20,7 @@ func CreateListCmd(repos repository.Repos) *cobra.Command {
 				fmt.Printf("error: %s\n", err.Error())
 				return
 			}
-			
+
 			for _, filename := range filenames {
 				fmt.Printf("%s\n", filename)
 			}

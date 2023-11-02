@@ -1,11 +1,11 @@
 package repository
 
 type Repos struct {
-	Fshome   FshomeRepositoryInterface
+	Fs FsRepositoryInterface
 }
 
 func NewRepos() Repos {
 	return Repos{
-		Fshome:   &FshomeRepository{},
+		Fs: &FsRepository{},
 	}
 }
