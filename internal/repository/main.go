@@ -9,3 +9,9 @@ func NewRepos() Repos {
 		Fs: &FsRepository{},
 	}
 }
+
+func NewMockRepos() Repos {
+	return Repos{
+		Fs: &FsMockRepository{},
+	}
+}
