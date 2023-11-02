@@ -12,6 +12,10 @@ func NewRepos() Repos {
 
 func NewMockRepos() Repos {
 	return Repos{
-		Fs: &FsMockRepository{},
+		Fs: &FsMockRepository{
+			ListFilesInternal: func(path string) []string {
+				return make([]string, 0)
+			},
+		},
 	}
 }
