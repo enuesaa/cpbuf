@@ -15,6 +15,10 @@ func CreateListCmd(repos repository.Repos) *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			bufSrv := service.NewBufSrv(repos)
 
+			if !bufSrv.IsBufDirExist() {
+				return
+			}
+
 			filenames, err := bufSrv.ListFilenames()
 			if err != nil {
 				fmt.Printf("error: %s\n", err.Error())
