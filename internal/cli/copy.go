@@ -12,10 +12,19 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "copy <filename>",
 		Short: "copy file to buf dir",
-		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			filename := args[0]
-
+			interactive, _ := cmd.Flags().GetBool("interactive")
+			if !interactive && len(args) == 0 {
+				fmt.Printf("error: please pass filename to copy.\n")
+				return
+			}
+			filename := ""
+			if len(args) > 0 {
+				filename = args[0]
+			}
+			if interactive {
+				filename = repos.Fs.SelectFileWithPrompt()
+			}
 			bufSrv := service.NewBufSrv(repos)
 			if err := bufSrv.CreateBufDir(); err != nil {
 				fmt.Printf("error: %s\n", err.Error())
@@ -28,7 +37,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			}
 		},
 	}
-	// cmd.Flags().BoolP("interactive", "-i", false, "interactive")
+	cmd.Flags().BoolP("interactive", "i", false, "interactive")
 
 	return cmd
 }

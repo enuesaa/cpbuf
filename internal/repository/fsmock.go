@@ -31,3 +31,7 @@ func (repo *FsMockRepository) CopyFile(srcPath string, dstPath string) error {
 func (repo *FsMockRepository) ListFiles(path string) ([]string, error) {
 	return repo.ListFilesInternal(path), nil
 }
+
+func (repo *FsMockRepository) SelectFileWithPrompt() string {
+	return ""
+}
