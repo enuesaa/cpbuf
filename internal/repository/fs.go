@@ -3,9 +3,6 @@ package repository
 import (
 	"io"
 	"os"
-	"fmt"
-	// "path/filepath"
-	// "strings"
 
 	"github.com/c-bata/go-prompt"
 	"golang.org/x/term"
@@ -77,20 +74,6 @@ func (repo *FsRepository) ListFiles(path string) ([]string, error) {
 	return filenames, nil
 }
 
-// see https://github.com/c-bata/go-prompt/issues/8
-// see https://github.com/c-bata/go-prompt/issues/233
-func (repo *FsRepository) saveState() {
-	state, _ := term.GetState(int(os.Stdin.Fd()))
-	termState = state
-}
-
-func (repo *FsRepository) restoreState() {
-	if termState != nil {
-		term.Restore(int(os.Stdin.Fd()), termState)
-	}
-	termState = nil
-}
-
 func (repo *FsRepository) SelectFileWithPrompt() string {
 	repo.saveState()
 
@@ -112,14 +95,7 @@ func (repo *FsRepository) SelectFileWithPrompt() string {
 	options = append(options, prompt.OptionPrefixTextColor(prompt.Brown))
 	options = append(options, prompt.OptionCompletionOnDown())
 
-	for {
-		dir := prompt.Input("filename: ", repo.suggestDirs, options...)
-		if repo.IsFileOrDirExist(dir) {
-			repo.restoreState()
-			return dir
-		}
-		fmt.Printf("Dir %s does not exist. \n", dir)
-	}
+	return prompt.Input("filename: ", repo.suggestDirs, options...)
 }
 
 func (repo *FsRepository) suggestDirs(in prompt.Document) []prompt.Suggest {
@@ -131,4 +107,18 @@ func (repo *FsRepository) suggestDirs(in prompt.Document) []prompt.Suggest {
 	}
 
 	return prompt.FilterHasPrefix(suggests, in.Text, false)
+}
+
+// see https://github.com/c-bata/go-prompt/issues/8
+// see https://github.com/c-bata/go-prompt/issues/233
+func (repo *FsRepository) saveState() {
+	state, _ := term.GetState(int(os.Stdin.Fd()))
+	termState = state
+}
+
+func (repo *FsRepository) restoreState() {
+	if termState != nil {
+		term.Restore(int(os.Stdin.Fd()), termState)
+	}
+	termState = nil
 }
