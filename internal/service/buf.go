@@ -77,20 +77,6 @@ func (srv *BufSrv) PasteFileToWorkDir(filename string) error {
 	return srv.repos.Fs.CopyFile(filePathInBufDir, filename)
 }
 
-func (srv *BufSrv) PasteFilesToWorkDir() error {
-	bufDirPath, err := srv.GetBufDirPath()
-	if err != nil {
-		return err
-	}
-	filenames, err := srv.repos.Fs.ListFiles(bufDirPath)
-	for _, filename := range filenames {
-		if err := srv.PasteFileToWorkDir(filename); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 func (srv *BufSrv) ListFilenames() ([]string, error) {
 	bufDirPath, err := srv.GetBufDirPath()
 	if err != nil {
@@ -133,6 +119,14 @@ func (srv *BufSrv) ListFilesInWorkDir() ([]string, error) {
 	}
 
 	return srv.repos.Fs.ListFiles(workdirPath)
+}
+
+func (srv *BufSrv) ListFilesInBufDir() ([]string, error) {
+	bufDirPath, err := srv.GetBufDirPath()
+	if err != nil {
+		return make([]string, 0), err
+	}
+	return srv.repos.Fs.ListFiles(bufDirPath)
 }
 
 func (srv *BufSrv) SelectFileWithPrompt() string {
