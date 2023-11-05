@@ -36,6 +36,6 @@ func TestExtractSameFilenamesInWorkDir(t *testing.T) {
 	}
 
 	bufSrv := NewBufSrv(repos)
-	actual, _ := bufSrv.ExtractSameFilenamesInWorkDir()
+	actual, _ := bufSrv.ListConflictedFilenames()
 	assert.Equal(t, actual, []string{"a", "d"})
 }

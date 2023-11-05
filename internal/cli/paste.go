@@ -14,24 +14,38 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 		Short: "paste files",
 		Run: func(cmd *cobra.Command, args []string) {
 			keep, _ := cmd.Flags().GetBool("keep")
+			overwrite, _ := cmd.Flags().GetBool("overwrite")
 
 			bufSrv := service.NewBufSrv(repos)
 			if !bufSrv.IsBufDirExist() {
 				fmt.Printf("(No files were found.)\n")
 				return
 			}
-			alreadyExistsFilenames, err := bufSrv.ExtractSameFilenamesInWorkDir()
+
+			conflictedFilenames, err := bufSrv.ListConflictedFilenames()
 			if err != nil {
 				fmt.Printf("error: %s\n", err.Error())
 				return
 			}
-
-			if len(alreadyExistsFilenames) > 0 {
-				fmt.Printf("These files are already exists in this dir.\n")
-				for _, filename := range alreadyExistsFilenames {
-					fmt.Printf("- %s\n", filename)
+			if len(conflictedFilenames) > 0 {
+				if overwrite {
+					for _, filename := range conflictedFilenames {
+						if err := bufSrv.RemoveFileInWorkDir(filename); err != nil {
+							fmt.Printf("error: %s\n", err.Error())
+							return
+						}
+						fmt.Printf("removed: %s\n", filename)
+					}
+				} else {
+					fmt.Printf("These files already exist in this dir.\n")
+					for _, filename := range conflictedFilenames {
+						fmt.Printf("- %s\n", filename)
+					}
+					fmt.Printf("\n")
+					fmt.Printf("If you wish overwrite these files, please run command below.\n")
+					fmt.Printf("  cpbuf paste --overwrite\n")
+					return
 				}
-				return
 			}
 
 			filenames, err := bufSrv.ListFilesInBufDir()
@@ -61,6 +75,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 		},
 	}
 	cmd.Flags().Bool("keep", false, "do not clear buf dir")
+	cmd.Flags().BoolP("overwrite", "o", false, "do not clear buf dir")
 
 	return cmd
 }

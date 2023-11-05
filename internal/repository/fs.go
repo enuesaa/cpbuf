@@ -14,7 +14,7 @@ type FsRepositoryInterface interface {
 	Workdir() (string, error)
 	StartSelectPrompt(message string, completer prompt.Completer) string
 	CreateDir(path string) error
-	RemoveDir(path string) error
+	Remove(path string) error
 	CopyFile(srcPath string, dstPath string) error
 	ListFiles(path string) ([]string, error)
 }
@@ -41,7 +41,7 @@ func (repo *FsRepository) CreateDir(path string) error {
 	return os.Mkdir(path, os.ModePerm)
 }
 
-func (repo *FsRepository) RemoveDir(path string) error {
+func (repo *FsRepository) Remove(path string) error {
 	return os.RemoveAll(path)
 }
 

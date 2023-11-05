@@ -22,7 +22,7 @@ func (repo *FsMockRepository) CreateDir(path string) error {
 	return nil
 }
 
-func (repo *FsMockRepository) RemoveDir(path string) error {
+func (repo *FsMockRepository) Remove(path string) error {
 	return nil
 }
 

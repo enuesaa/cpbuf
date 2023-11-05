@@ -56,7 +56,7 @@ func (srv *BufSrv) DeleteBufDir() error {
 	if err != nil {
 		return err
 	}
-	return srv.repos.Fs.RemoveDir(path)
+	return srv.repos.Fs.Remove(path)
 }
 
 func (srv *BufSrv) CopyFileToBufDir(filename string) error {
@@ -85,7 +85,7 @@ func (srv *BufSrv) ListFilenames() ([]string, error) {
 	return srv.repos.Fs.ListFiles(bufDirPath)
 }
 
-func (srv *BufSrv) ExtractSameFilenamesInWorkDir() ([]string, error) {
+func (srv *BufSrv) ListConflictedFilenames() ([]string, error) {
 	workdirPath, err := srv.repos.Fs.Workdir()
 	if err != nil {
 		return make([]string, 0), err
@@ -110,6 +110,15 @@ func (srv *BufSrv) ExtractSameFilenamesInWorkDir() ([]string, error) {
 	}
 
 	return duplicates, nil
+}
+
+func (srv *BufSrv) RemoveFileInWorkDir(filename string) error {
+	workdirPath, err := srv.repos.Fs.Workdir()
+	if err != nil {
+		return err
+	}
+
+	return srv.repos.Fs.Remove(filepath.Join(workdirPath, filename))
 }
 
 func (srv *BufSrv) ListFilesInWorkDir() ([]string, error) {
