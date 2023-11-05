@@ -10,6 +10,14 @@ func (repo *FsMockRepository) IsFileOrDirExist(path string) bool {
 	return true
 }
 
+func (repo *FsMockRepository) IsDir(path string) (bool, error) {
+	return false, nil
+}
+
+func (repo *FsMockRepository) MkDir(path string) error {
+	return nil
+}
+
 func (repo *FsMockRepository) Homedir() (string, error) {
 	return "/", nil
 }
@@ -32,6 +40,10 @@ func (repo *FsMockRepository) CopyFile(srcPath string, dstPath string) error {
 
 func (repo *FsMockRepository) ListFiles(path string) ([]string, error) {
 	return repo.ListFilesInternal(path), nil
+}
+
+func (repo *FsMockRepository) ListFilesRecursively(path string) ([]string, error) {
+	return make([]string, 0), nil
 }
 
 func (repo *FsMockRepository) StartSelectPrompt(message string, completer prompt.Completer) string {

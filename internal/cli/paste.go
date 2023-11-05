@@ -18,7 +18,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 
 			bufSrv := service.NewBufSrv(repos)
 			if !bufSrv.IsBufDirExist() {
-				fmt.Printf("(No files were found.)\n")
+				fmt.Printf("No files were found.\n")
 				return
 			}
 
@@ -54,7 +54,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 				return
 			}
 			if len(filenames) == 0 {
-				fmt.Printf("(No files were found.)\n")
+				fmt.Printf("No files were found.\n")
 				// to delete buf dir, do not return here.
 			}
 			for _, filename := range filenames {
@@ -75,7 +75,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 		},
 	}
 	cmd.Flags().Bool("keep", false, "do not clear buf dir")
-	cmd.Flags().BoolP("overwrite", "o", false, "do not clear buf dir")
+	cmd.Flags().BoolP("overwrite", "o", false, "overwrite conflicted files")
 
 	return cmd
 }

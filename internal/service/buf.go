@@ -65,7 +65,37 @@ func (srv *BufSrv) CopyFileToBufDir(filename string) error {
 		return err
 	}
 	dstPath := filepath.Join(registryPath, filename)
-	return srv.repos.Fs.CopyFile(filename, dstPath)
+	return srv.copyFilesRecursively(filename, dstPath)
+}
+
+func (srv *BufSrv) copyFilesRecursively(path string, dstPath string) error {
+	isDir, err := srv.repos.Fs.IsDir(path)
+	if err != nil {
+		return err
+	}
+	if isDir {
+		files, err := srv.repos.Fs.ListFilesRecursively(path)
+		if err != nil {
+			return err
+		}
+		for _, file := range files {
+			if err := srv.repos.Fs.MkDir(filepath.Dir(filepath.Join(filepath.Dir(dstPath), file))); err != nil {
+				return err
+			}
+			isfiledir, err := srv.repos.Fs.IsDir(file)
+			if err != nil {
+				return err
+			}
+			if isfiledir {
+				continue
+			}
+			if err := srv.repos.Fs.CopyFile(file, filepath.Join(filepath.Dir(dstPath), file)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	return srv.repos.Fs.CopyFile(path, dstPath)
 }
 
 func (srv *BufSrv) PasteFileToWorkDir(filename string) error {
@@ -74,7 +104,7 @@ func (srv *BufSrv) PasteFileToWorkDir(filename string) error {
 		return err
 	}
 	filePathInBufDir := filepath.Join(registryPath, filename)
-	return srv.repos.Fs.CopyFile(filePathInBufDir, filename)
+	return srv.copyFilesRecursively(filePathInBufDir, filename)
 }
 
 func (srv *BufSrv) ListFilenames() ([]string, error) {

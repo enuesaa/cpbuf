@@ -3,6 +3,7 @@ package repository
 import (
 	"io"
 	"os"
+	"path/filepath"
 
 	"github.com/c-bata/go-prompt"
 	"golang.org/x/term"
@@ -10,6 +11,8 @@ import (
 
 type FsRepositoryInterface interface {
 	IsFileOrDirExist(path string) bool
+	IsDir(path string) (bool, error)
+	MkDir(path string) error
 	Homedir() (string, error)
 	Workdir() (string, error)
 	StartSelectPrompt(message string, completer prompt.Completer) string
@@ -17,6 +20,7 @@ type FsRepositoryInterface interface {
 	Remove(path string) error
 	CopyFile(srcPath string, dstPath string) error
 	ListFiles(path string) ([]string, error)
+	ListFilesRecursively(path string) ([]string, error)
 }
 type FsRepository struct{}
 
@@ -27,6 +31,18 @@ func (repo *FsRepository) IsFileOrDirExist(path string) bool {
 		return false
 	}
 	return true
+}
+
+func (repo *FsRepository) IsDir(path string) (bool, error) {
+	f, err := os.Stat(path)
+	if err != nil {
+		return false, err
+	}
+	return f.IsDir(), nil
+}
+
+func (repo *FsRepository) MkDir(path string) error {
+	return os.MkdirAll(path, os.ModePerm)
 }
 
 func (repo *FsRepository) Homedir() (string, error) {
@@ -72,6 +88,22 @@ func (repo *FsRepository) ListFiles(path string) ([]string, error) {
 		filenames = append(filenames, entry.Name())
 	}
 	return filenames, nil
+}
+
+func (repo *FsRepository) ListFilesRecursively(path string) ([]string, error) {
+	filenames := make([]string, 0)
+	err := filepath.Walk(path, func(fpath string, file os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if file.IsDir() {
+			return nil
+		}
+		filenames = append(filenames, fpath)
+		return nil
+	})
+
+	return filenames, err
 }
 
 func (repo *FsRepository) StartSelectPrompt(message string, completer prompt.Completer) string {
