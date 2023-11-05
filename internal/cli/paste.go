@@ -13,6 +13,8 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 		Use:   "paste",
 		Short: "paste files",
 		Run: func(cmd *cobra.Command, args []string) {
+			keep, _ := cmd.Flags().GetBool("keep")
+
 			bufSrv := service.NewBufSrv(repos)
 
 			alreadyExistsFilenames, err := bufSrv.ExtractSameFilenamesInWorkDir()
@@ -34,12 +36,16 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 				return
 			}
 
+			if keep {
+				return
+			}
+
 			if err := bufSrv.DeleteBufDir(); err != nil {
 				fmt.Printf("error: %s\n", err.Error())
 			}
 		},
 	}
-	// cmd.Flags().Bool("keep", false, "do not clear buf dir")
+	cmd.Flags().Bool("keep", false, "do not clear buf dir")
 
 	return cmd
 }
