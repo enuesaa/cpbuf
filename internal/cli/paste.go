@@ -16,6 +16,10 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 			keep, _ := cmd.Flags().GetBool("keep")
 
 			bufSrv := service.NewBufSrv(repos)
+			if !bufSrv.IsBufDirExist() {
+				fmt.Printf("(No files were found.)\n")
+				return
+			}
 			alreadyExistsFilenames, err := bufSrv.ExtractSameFilenamesInWorkDir()
 			if err != nil {
 				fmt.Printf("error: %s\n", err.Error())
@@ -34,6 +38,10 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 			if err != nil {
 				fmt.Printf("error: %s\n", err.Error())
 				return
+			}
+			if len(filenames) == 0 {
+				fmt.Printf("(No files were found.)\n")
+				// to delete buf dir, do not return here.
 			}
 			for _, filename := range filenames {
 				if err := bufSrv.PasteFileToWorkDir(filename); err != nil {
