@@ -13,7 +13,8 @@ go install
 ## Usage
 ```console
 $ cpbuf --help
-A CLI tool to copy and paste files
+A CLI tool to copy and paste files.
+Cpbuf uses buf-dir to save files temporarily.
 
 Usage:
   cpbuf [flags]
