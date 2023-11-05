@@ -11,8 +11,8 @@ func main() {
 
 	app := &cobra.Command{
 		Use:     "cpbuf",
-		Short:   "A CLI tool to copy and paste files",
-		Version: "0.0.1",
+		Short:   "A CLI tool to copy and paste files. cpbuf uses buf-dir to save files temporarily.",
+		Version: "0.0.2",
 		Run: func(cmd *cobra.Command, args []string) {
 			cmd.Help()
 		},

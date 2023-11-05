@@ -1,7 +1,7 @@
 package repository
 
 type FsMockRepository struct {
-	ListFilesInternal func (path string) []string
+	ListFilesInternal func(path string) []string
 }
 
 func (repo *FsMockRepository) IsFileOrDirExist(path string) bool {

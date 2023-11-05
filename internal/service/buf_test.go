@@ -21,7 +21,7 @@ func TestIsBufDirExist(t *testing.T) {
 }
 
 func TestExtractSameFilenamesInWorkDir(t *testing.T) {
-	repos := repository.Repos {
+	repos := repository.Repos{
 		Fs: &repository.FsMockRepository{
 			ListFilesInternal: func(path string) []string {
 				if path == "/.cpbuf" {

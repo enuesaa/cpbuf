@@ -103,7 +103,7 @@ func (repo *FsRepository) suggestDirs(in prompt.Document) []prompt.Suggest {
 
 	files, _ := repo.ListFiles(".")
 	for _, filename := range files {
-		suggests = append(suggests, prompt.Suggest{ Text: filename })
+		suggests = append(suggests, prompt.Suggest{Text: filename})
 	}
 
 	return prompt.FilterHasPrefix(suggests, in.Text, false)

@@ -14,7 +14,6 @@ func CreateListCmd(repos repository.Repos) *cobra.Command {
 		Short: "list filenames in buf dir",
 		Run: func(cmd *cobra.Command, args []string) {
 			bufSrv := service.NewBufSrv(repos)
-
 			if !bufSrv.IsBufDirExist() {
 				return
 			}
