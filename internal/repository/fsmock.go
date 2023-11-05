@@ -1,5 +1,7 @@
 package repository
 
+import "github.com/c-bata/go-prompt"
+
 type FsMockRepository struct {
 	ListFilesInternal func(path string) []string
 }
@@ -32,6 +34,6 @@ func (repo *FsMockRepository) ListFiles(path string) ([]string, error) {
 	return repo.ListFilesInternal(path), nil
 }
 
-func (repo *FsMockRepository) SelectFileWithPrompt() string {
+func (repo *FsMockRepository) StartSelectPrompt(message string, completer prompt.Completer) string {
 	return ""
 }

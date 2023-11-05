@@ -4,6 +4,7 @@ import (
 	"path/filepath"
 	"slices"
 
+	"github.com/c-bata/go-prompt"
 	"github.com/enuesaa/cpbuf/internal/repository"
 )
 
@@ -132,4 +133,19 @@ func (srv *BufSrv) ListFilesInWorkDir() ([]string, error) {
 	}
 
 	return srv.repos.Fs.ListFiles(workdirPath)
+}
+
+func (srv *BufSrv) SelectFileWithPrompt() string {
+	filename := srv.repos.Fs.StartSelectPrompt("filename: ", func (in prompt.Document) []prompt.Suggest {
+		suggests := make([]prompt.Suggest, 0)
+	
+		files, _ := srv.repos.Fs.ListFiles(".")
+		for _, filename := range files {
+			suggests = append(suggests, prompt.Suggest{Text: filename})
+		}
+	
+		return prompt.FilterHasPrefix(suggests, in.Text, false)
+	})
+
+	return filename
 }

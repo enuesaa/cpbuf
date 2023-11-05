@@ -12,7 +12,7 @@ type FsRepositoryInterface interface {
 	IsFileOrDirExist(path string) bool
 	Homedir() (string, error)
 	Workdir() (string, error)
-	SelectFileWithPrompt() string
+	StartSelectPrompt(message string, completer prompt.Completer) string
 	CreateDir(path string) error
 	RemoveDir(path string) error
 	CopyFile(srcPath string, dstPath string) error
@@ -74,7 +74,7 @@ func (repo *FsRepository) ListFiles(path string) ([]string, error) {
 	return filenames, nil
 }
 
-func (repo *FsRepository) SelectFileWithPrompt() string {
+func (repo *FsRepository) StartSelectPrompt(message string, completer prompt.Completer) string {
 	repo.saveState()
 
 	options := make([]prompt.Option, 0)
@@ -95,18 +95,7 @@ func (repo *FsRepository) SelectFileWithPrompt() string {
 	options = append(options, prompt.OptionPrefixTextColor(prompt.Brown))
 	options = append(options, prompt.OptionCompletionOnDown())
 
-	return prompt.Input("filename: ", repo.suggestDirs, options...)
-}
-
-func (repo *FsRepository) suggestDirs(in prompt.Document) []prompt.Suggest {
-	suggests := make([]prompt.Suggest, 0)
-
-	files, _ := repo.ListFiles(".")
-	for _, filename := range files {
-		suggests = append(suggests, prompt.Suggest{Text: filename})
-	}
-
-	return prompt.FilterHasPrefix(suggests, in.Text, false)
+	return prompt.Input(message, completer, options...)
 }
 
 // see https://github.com/c-bata/go-prompt/issues/8

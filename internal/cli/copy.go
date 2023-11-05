@@ -18,10 +18,6 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				fmt.Printf("error: please pass filename to copy.\n")
 				return
 			}
-			if interactive {
-				selected := repos.Fs.SelectFileWithPrompt()
-				args = []string{selected}
-			}
 
 			bufSrv := service.NewBufSrv(repos)
 			if !bufSrv.IsBufDirExist() {
@@ -29,6 +25,11 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 					fmt.Printf("error: %s\n", err.Error())
 					return
 				}
+			}
+
+			if interactive {
+				selected := bufSrv.SelectFileWithPrompt()
+				args = []string{selected}
 			}
 
 			filename := args[0]
