@@ -127,7 +127,10 @@ func (repo *FsRepository) StartSelectPrompt(message string, completer prompt.Com
 	options = append(options, prompt.OptionPrefixTextColor(prompt.Brown))
 	options = append(options, prompt.OptionCompletionOnDown())
 
-	return prompt.Input(message, completer, options...)
+	answer := prompt.Input(message, completer, options...)
+	repo.restoreState()
+
+	return answer
 }
 
 // see https://github.com/c-bata/go-prompt/issues/8
