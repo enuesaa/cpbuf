@@ -2,11 +2,13 @@ package repository
 
 type Repos struct {
 	Fs FsRepositoryInterface
+	Prompt PromptRepositoryInterface
 }
 
 func NewRepos() Repos {
 	return Repos{
 		Fs: &FsRepository{},
+		Prompt: &PromptRepository{},
 	}
 }
 
@@ -17,5 +19,6 @@ func NewMockRepos() Repos {
 				return make([]string, 0)
 			},
 		},
+		Prompt: &PromptRepository{},
 	}
 }

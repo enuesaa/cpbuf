@@ -194,7 +194,7 @@ func (srv *BufSrv) ListFilesInBufDir() ([]string, error) {
 }
 
 func (srv *BufSrv) SelectFileWithPrompt() string {
-	filename := srv.repos.Fs.StartSelectPrompt("filename: ", func (in prompt.Document) []prompt.Suggest {
+	filename := srv.repos.Prompt.StartSelectPrompt("filename: ", func (in prompt.Document) []prompt.Suggest {
 		suggests := make([]prompt.Suggest, 0)
 	
 		files, _ := srv.repos.Fs.ListFiles(".")
