@@ -4,7 +4,7 @@ type FsMockRepository struct {
 	ListFilesInternal func(path string) []string
 }
 
-func (repo *FsMockRepository) IsFileOrDirExist(path string) bool {
+func (repo *FsMockRepository) IsExist(path string) bool {
 	return true
 }
 
@@ -12,11 +12,11 @@ func (repo *FsMockRepository) IsDir(path string) (bool, error) {
 	return false, nil
 }
 
-func (repo *FsMockRepository) Homedir() (string, error) {
+func (repo *FsMockRepository) HomeDir() (string, error) {
 	return "/", nil
 }
 
-func (repo *FsMockRepository) Workdir() (string, error) {
+func (repo *FsMockRepository) WorkDir() (string, error) {
 	return "/workdir", nil
 }
 

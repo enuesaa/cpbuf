@@ -19,7 +19,7 @@ func NewBufSrv(repos repository.Repos) BufSrv {
 }
 
 func (srv *BufSrv) GetBufDirPath() (string, error) {
-	homedir, err := srv.repos.Fs.Homedir()
+	homedir, err := srv.repos.Fs.HomeDir()
 	if err != nil {
 		return "", err
 	}
@@ -28,12 +28,12 @@ func (srv *BufSrv) GetBufDirPath() (string, error) {
 }
 
 func (srv *BufSrv) IsBufDirExist() bool {
-	homedir, err := srv.repos.Fs.Homedir()
+	homedir, err := srv.repos.Fs.HomeDir()
 	if err != nil {
 		return false
 	}
 	path := filepath.Join(homedir, ".cpbuf")
-	return srv.repos.Fs.IsFileOrDirExist(path)
+	return srv.repos.Fs.IsExist(path)
 }
 
 func (srv *BufSrv) CreateBufDir() error {
@@ -167,7 +167,7 @@ func (srv *BufSrv) ListFilenames() ([]string, error) {
 }
 
 func (srv *BufSrv) ListConflictedFilenames() ([]string, error) {
-	workdirPath, err := srv.repos.Fs.Workdir()
+	workdirPath, err := srv.repos.Fs.WorkDir()
 	if err != nil {
 		return make([]string, 0), err
 	}
@@ -194,7 +194,7 @@ func (srv *BufSrv) ListConflictedFilenames() ([]string, error) {
 }
 
 func (srv *BufSrv) RemoveFileInWorkDir(filename string) error {
-	workdirPath, err := srv.repos.Fs.Workdir()
+	workdirPath, err := srv.repos.Fs.WorkDir()
 	if err != nil {
 		return err
 	}
@@ -203,7 +203,7 @@ func (srv *BufSrv) RemoveFileInWorkDir(filename string) error {
 }
 
 func (srv *BufSrv) ListFilesInWorkDir() ([]string, error) {
-	workdirPath, err := srv.repos.Fs.Workdir()
+	workdirPath, err := srv.repos.Fs.WorkDir()
 	if err != nil {
 		return make([]string, 0), err
 	}

@@ -6,18 +6,18 @@ import (
 )
 
 type FsRepositoryInterface interface {
-	IsFileOrDirExist(path string) bool
+	IsExist(path string) bool
 	IsDir(path string) (bool, error)
 	CreateDir(path string) error
-	Homedir() (string, error)
-	Workdir() (string, error)
+	HomeDir() (string, error)
+	WorkDir() (string, error)
 	Remove(path string) error
 	CopyFile(srcPath string, dstPath string) error
 	ListFiles(path string) ([]string, error)
 }
 type FsRepository struct{}
 
-func (repo *FsRepository) IsFileOrDirExist(path string) bool {
+func (repo *FsRepository) IsExist(path string) bool {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return false
 	}
@@ -36,11 +36,11 @@ func (repo *FsRepository) CreateDir(path string) error {
 	return os.MkdirAll(path, os.ModePerm)
 }
 
-func (repo *FsRepository) Homedir() (string, error) {
+func (repo *FsRepository) HomeDir() (string, error) {
 	return os.UserHomeDir()
 }
 
-func (repo *FsRepository) Workdir() (string, error) {
+func (repo *FsRepository) WorkDir() (string, error) {
 	return os.Getwd()
 }
 
