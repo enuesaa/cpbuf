@@ -76,7 +76,7 @@ func (srv *BufSrv) CopyFileToBufDir(filename string) error {
 			return err
 		}
 		for _, file := range files {
-			if err := srv.repos.Fs.MkDir(filepath.Dir(filepath.Join(registryPath, file))); err != nil {
+			if err := srv.repos.Fs.CreateDir(filepath.Dir(filepath.Join(registryPath, file))); err != nil {
 				return err
 			}
 			isfiledir, err := srv.repos.Fs.IsDir(file)
@@ -113,7 +113,7 @@ func (srv *BufSrv) PasteFileToWorkDir(filename string) error {
 		}
 		for _, file := range files {
 			relpath, err := filepath.Rel(registryPath, file)
-			if err := srv.repos.Fs.MkDir(filepath.Dir(relpath)); err != nil {
+			if err := srv.repos.Fs.CreateDir(filepath.Dir(relpath)); err != nil {
 				return err
 			}
 			isfiledir, err := srv.repos.Fs.IsDir(file)

@@ -12,11 +12,10 @@ import (
 type FsRepositoryInterface interface {
 	IsFileOrDirExist(path string) bool
 	IsDir(path string) (bool, error)
-	MkDir(path string) error
+	CreateDir(path string) error
 	Homedir() (string, error)
 	Workdir() (string, error)
 	StartSelectPrompt(message string, completer prompt.Completer) string
-	CreateDir(path string) error
 	Remove(path string) error
 	CopyFile(srcPath string, dstPath string) error
 	ListFiles(path string) ([]string, error)
@@ -41,7 +40,7 @@ func (repo *FsRepository) IsDir(path string) (bool, error) {
 	return f.IsDir(), nil
 }
 
-func (repo *FsRepository) MkDir(path string) error {
+func (repo *FsRepository) CreateDir(path string) error {
 	return os.MkdirAll(path, os.ModePerm)
 }
 
@@ -51,10 +50,6 @@ func (repo *FsRepository) Homedir() (string, error) {
 
 func (repo *FsRepository) Workdir() (string, error) {
 	return os.Getwd()
-}
-
-func (repo *FsRepository) CreateDir(path string) error {
-	return os.Mkdir(path, os.ModePerm)
 }
 
 func (repo *FsRepository) Remove(path string) error {
