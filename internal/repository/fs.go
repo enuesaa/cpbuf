@@ -3,7 +3,6 @@ package repository
 import (
 	"io"
 	"os"
-	"path/filepath"
 )
 
 type FsRepositoryInterface interface {
@@ -15,7 +14,6 @@ type FsRepositoryInterface interface {
 	Remove(path string) error
 	CopyFile(srcPath string, dstPath string) error
 	ListFiles(path string) ([]string, error)
-	ListFilesRecursively(path string) ([]string, error)
 }
 type FsRepository struct{}
 
@@ -74,23 +72,10 @@ func (repo *FsRepository) ListFiles(path string) ([]string, error) {
 	}
 	filenames := make([]string, 0)
 	for _, entry := range entries {
+		if entry.Name() == ".git" {
+			continue
+		}
 		filenames = append(filenames, entry.Name())
 	}
 	return filenames, nil
-}
-
-func (repo *FsRepository) ListFilesRecursively(path string) ([]string, error) {
-	filenames := make([]string, 0)
-	err := filepath.Walk(path, func(fpath string, file os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if file.IsDir() {
-			return nil
-		}
-		filenames = append(filenames, fpath)
-		return nil
-	})
-
-	return filenames, err
 }
