@@ -92,7 +92,7 @@ func (srv *BufSrv) CopyFileToBufDir(filename string) error {
 		}
 		return nil
 	}
-	return srv.repos.Fs.CopyFile(filename, filepath.Join(registryPath, dstPath))
+	return srv.repos.Fs.CopyFile(filename, dstPath)
 }
 
 func (srv *BufSrv) PasteFileToWorkDir(filename string) error {

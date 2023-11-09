@@ -13,7 +13,6 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 		Use:   "copy <filename>",
 		Short: "copy file to buf dir",
 		Run: func(cmd *cobra.Command, args []string) {
-			// fix when arg passed.
 			interactive, _ := cmd.Flags().GetBool("interactive")
 			if !interactive && len(args) == 0 {
 				fmt.Printf("error: please pass filename to copy.\n")
