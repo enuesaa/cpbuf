@@ -11,7 +11,7 @@ type PromptRepositoryInterface interface {
 	StartSelectPrompt(message string, completer prompt.Completer) string
 }
 type PromptRepository struct {
-	termState *term.State	
+	termState *term.State
 }
 
 func (repo *PromptRepository) StartSelectPrompt(message string, completer prompt.Completer) string {

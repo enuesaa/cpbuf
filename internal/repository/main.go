@@ -1,13 +1,13 @@
 package repository
 
 type Repos struct {
-	Fs FsRepositoryInterface
+	Fs     FsRepositoryInterface
 	Prompt PromptRepositoryInterface
 }
 
 func NewRepos() Repos {
 	return Repos{
-		Fs: &FsRepository{},
+		Fs:     &FsRepository{},
 		Prompt: &PromptRepository{},
 	}
 }
