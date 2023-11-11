@@ -202,7 +202,8 @@ func (srv *BufSrv) ListFilesRecursively(path string) ([]string, error) {
 		}
 	}
 
-	return files, nil
+	slices.Sort(files)
+	return slices.Compact(files), nil
 }
 
 func (srv *BufSrv) RemoveFileInWorkDir(filename string) error {
@@ -218,7 +219,19 @@ func (srv *BufSrv) ListFilesInWorkDir() ([]string, error) {
 	if err != nil {
 		return make([]string, 0), err
 	}
-	return srv.repos.Fs.ListFiles(workDirPath)
+	files, err := srv.repos.Fs.ListFiles(workDirPath)
+	if err != nil {
+		return make([]string, 0), err
+	}
+	list := make([]string, 0)
+	for _, path := range files {
+		filename, err := srv.ConvertWorkPathToFilename(path)
+		if err != nil {
+			return make([]string, 0), err
+		}
+		list = append(list, filename)
+	}
+	return list, nil
 }
 
 func (srv *BufSrv) ListFilesInBufDir() ([]string, error) {

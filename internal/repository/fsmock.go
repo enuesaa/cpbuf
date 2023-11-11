@@ -33,7 +33,6 @@ func (repo *FsMockRepository) IsDir(path string) (bool, error) {
 		}
 	}
 	if result != nil {
-		fmt.Printf("path %s, result %+v", path, *result)
 		return *result, nil
 	}
 
@@ -75,7 +74,7 @@ func (repo *FsMockRepository) ListFiles(path string) ([]string, error) {
 		if strings.HasPrefix(filepath, path) {
 			rest := strings.TrimPrefix(filepath, path + "/")
 			if !strings.Contains(rest, "/") {
-				list = append(list, rest)
+				list = append(list, filepath)
 			}
 		}
 	}
