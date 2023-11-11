@@ -58,7 +58,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 				// to delete buf dir, do not return here.
 			}
 			for _, filename := range filenames {
-				if err := bufSrv.PasteFileToWorkDir(filename); err != nil {
+				if err := bufSrv.Paste(filename); err != nil {
 					fmt.Printf("error: %s\n", err.Error())
 					return
 				}

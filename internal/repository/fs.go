@@ -66,6 +66,7 @@ func (repo *FsRepository) CopyFile(srcPath string, dstPath string) error {
 	return err
 }
 
+// should return absolute path
 func (repo *FsRepository) ListFiles(path string) ([]string, error) {
 	entries, err := os.ReadDir(path)
 	if err != nil {
