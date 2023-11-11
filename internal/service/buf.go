@@ -158,14 +158,6 @@ func (srv *BufSrv) ListFilesRecursively(path string) ([]string, error) {
 	return list, nil
 }
 
-func (srv *BufSrv) ListFilenames() ([]string, error) {
-	bufDirPath, err := srv.GetBufDirPath()
-	if err != nil {
-		return make([]string, 0), err
-	}
-	return srv.repos.Fs.ListFiles(bufDirPath)
-}
-
 func (srv *BufSrv) RemoveFileInWorkDir(filename string) error {
 	workdirPath, err := srv.repos.Fs.WorkDir()
 	if err != nil {

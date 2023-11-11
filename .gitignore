@@ -3,3 +3,7 @@
 
 # editor
 .vscode
+
+# testing
+cover.html
+cover.out

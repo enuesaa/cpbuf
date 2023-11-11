@@ -31,7 +31,16 @@ func TestCreateBufDir(t *testing.T) {
 	assert.Equal(t, true, bufSrv.IsBufDirExist())
 }
 
-func ListFilesInWorkDir(t *testing.T) {
+func TestDeleteBufDir(t *testing.T) {
+	fsmock := repository.FsMockRepository{ Files: []string{"/.cpbuf"} }
+	repos := repository.NewMockRepos(fsmock)
+
+	bufSrv := NewBufSrv(repos)
+	bufSrv.DeleteBufDir()
+	assert.Equal(t, false, bufSrv.IsBufDirExist())
+}
+
+func TestListFilesInWorkDir(t *testing.T) {
 	fsmock := repository.FsMockRepository{
 		Files: []string{
 			"/workdir/a",
@@ -42,7 +51,7 @@ func ListFilesInWorkDir(t *testing.T) {
 	repos := repository.NewMockRepos(fsmock)
 
 	bufSrv := NewBufSrv(repos)
-	actual, _ := bufSrv.ListFilesInBufDir()
+	actual, _ := bufSrv.ListFilesInWorkDir()
 	assert.Equal(t, []string{"a", "b", "c"}, actual)
 }
 
