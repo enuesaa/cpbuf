@@ -54,7 +54,7 @@ func (repo *FsMockRepository) ListFiles(path string) ([]string, error) {
 		if strings.HasPrefix(filepath, path) {
 			rest := strings.TrimPrefix(filepath, path + "/")
 			if !strings.Contains(rest, "/") {
-				list = append(list, filepath)
+				list = append(list, rest)
 			}
 		}
 	}

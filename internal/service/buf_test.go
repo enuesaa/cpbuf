@@ -20,24 +20,24 @@ func TestIsBufDirExist(t *testing.T) {
 	assert.Equal(t, true, bufSrv.IsBufDirExist())
 }
 
-// func TestExtractSameFilenamesInWorkDir(t *testing.T) {
-// 	fsmock := repository.FsMockRepository{
-// 		Files: []string{
-// 			"/.cpbuf/a",
-// 			"/.cpbuf/b",
-// 			"/.cpbuf/c",
-// 			"/.cpbuf/d",
-// 			"/.cpbuf/e",
-// 			"/workdir/a",
-// 			"/workdir/d",
-// 			"/workdir/f",
-// 		},
-// 	}
-// 	repos := repository.Repos{
-// 		Fs: &fsmock,
-// 	}
+func TestExtractSameFilenamesInWorkDir(t *testing.T) {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/.cpbuf/a",
+			"/.cpbuf/b",
+			"/.cpbuf/c",
+			"/.cpbuf/d",
+			"/.cpbuf/e",
+			"/workdir/a",
+			"/workdir/d",
+			"/workdir/f",
+		},
+	}
+	repos := repository.Repos{
+		Fs: &fsmock,
+	}
 
-// 	bufSrv := NewBufSrv(repos)
-// 	actual, _ := bufSrv.ListConflictedFilenames()
-// 	assert.Equal(t, []string{"a", "d"}, actual)
-// }
+	bufSrv := NewBufSrv(repos)
+	actual, _ := bufSrv.ListConflictedFilenames()
+	assert.Equal(t, []string{"a", "d"}, actual)
+}
