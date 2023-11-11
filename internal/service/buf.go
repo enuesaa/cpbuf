@@ -84,7 +84,7 @@ func (srv *BufSrv) ConvertWorkPathToFilename(workPath string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return strings.TrimPrefix(workPath, workDirPath), nil
+	return strings.TrimPrefix(workPath, workDirPath + "/"), nil
 }
 
 func (srv *BufSrv) ConvertBufferPathToFilename(bufferPath string) (string, error) {
@@ -92,7 +92,7 @@ func (srv *BufSrv) ConvertBufferPathToFilename(bufferPath string) (string, error
 	if err != nil {
 		return "", err
 	}
-	return strings.TrimPrefix(bufferPath, bufDirPath), nil
+	return strings.TrimPrefix(bufferPath, bufDirPath + "/"), nil
 }
 
 func (srv *BufSrv) Buffer(filename string) error {
@@ -226,7 +226,19 @@ func (srv *BufSrv) ListFilesInBufDir() ([]string, error) {
 	if err != nil {
 		return make([]string, 0), err
 	}
-	return srv.repos.Fs.ListFiles(bufDirPath)
+	files, err := srv.repos.Fs.ListFiles(bufDirPath)
+	if err != nil {
+		return make([]string, 0), err
+	}
+	list := make([]string, 0)
+	for _, path := range files {
+		filename, err := srv.ConvertBufferPathToFilename(path)
+		if err != nil {
+			return make([]string, 0), err
+		}
+		list = append(list, filename)
+	}
+	return list, nil
 }
 
 func (srv *BufSrv) SelectFileWithPrompt() string {
