@@ -42,23 +42,23 @@ func TestDeleteBufDir(t *testing.T) {
 	assert.Equal(t, false, bufSrv.IsBufDirExist())
 }
 
-func TestCopyFileToBufDir(t *testing.T) {
+func TestBufferFile(t *testing.T) {
 	fsmock := repository.FsMockRepository{
 		Files: []string{
 			"/workdir/a",
 			"/workdir/b",
-			// "/workdir/b/bb",
-			// "/workdir/b/bb/bbb",
+			"/workdir/b/bb",
+			"/workdir/b/bb/bbb",
 		},
 	}
 	repos := repository.NewMockRepos(fsmock)
 
 	bufSrv := NewBufSrv(repos)
-	assert.Equal(t, nil, bufSrv.CopyFileToBufDir("a"))
-	assert.Equal(t, nil, bufSrv.CopyFileToBufDir("b"))
+	assert.Equal(t, nil, bufSrv.Buffer("a"))
+	assert.Equal(t, nil, bufSrv.Buffer("b"))
 
 	actual, _ := bufSrv.ListFilesRecursively("/.cpbuf")
-	assert.Equal(t, []string{"/.cpbuf/a", "/.cpbuf/b"}, actual)
+	assert.Equal(t, []string{"/.cpbuf/a", "/.cpbuf/b", "/.cpbuf/b/bb", "/.cpbuf/b/bb/bbb"}, actual)
 }
 
 func TestListFilesRecursively(t *testing.T) {

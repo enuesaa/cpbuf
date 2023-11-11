@@ -33,7 +33,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			}
 
 			filename := args[0]
-			if err := bufSrv.CopyFileToBufDir(filename); err != nil {
+			if err := bufSrv.Buffer(filename); err != nil {
 				fmt.Printf("error: %s\n", err.Error())
 				return
 			}
