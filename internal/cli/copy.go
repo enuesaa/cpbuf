@@ -20,16 +20,16 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			}
 
 			bufSrv := service.NewBufSrv(repos)
+			if interactive {
+				selected := bufSrv.SelectFileWithPrompt()
+				args = []string{selected}
+			}
+
 			if !bufSrv.IsBufDirExist() {
 				if err := bufSrv.CreateBufDir(); err != nil {
 					fmt.Printf("error: %s\n", err.Error())
 					return
 				}
-			}
-
-			if interactive {
-				selected := bufSrv.SelectFileWithPrompt()
-				args = []string{selected}
 			}
 
 			filename := args[0]
@@ -39,7 +39,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			}
 		},
 	}
-	cmd.Flags().BoolP("interactive", "i", false, "interactive")
+	cmd.Flags().BoolP("interactive", "i", false, "start interactive prompt and select file.")
 
 	return cmd
 }

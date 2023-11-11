@@ -74,8 +74,8 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 			}
 		},
 	}
-	cmd.Flags().Bool("keep", false, "do not clear buf dir")
-	cmd.Flags().BoolP("overwrite", "o", false, "overwrite conflicted files")
+	cmd.Flags().Bool("keep", false, "keep buffered files. Default: false")
+	cmd.Flags().BoolP("overwrite", "o", false, "overwrite conflicted files. Default: false")
 
 	return cmd
 }

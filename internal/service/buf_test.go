@@ -7,6 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// see https://qiita.com/takehanKosuke/items/4342ca544d205fb36eb0
+
 func TestGetBufDirPath(t *testing.T) {
 	fsmock := repository.FsMockRepository{ Files: []string{} }
 	repos := repository.NewMockRepos(fsmock)
