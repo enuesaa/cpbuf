@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"path/filepath"
+	"strings"
 
 	"github.com/c-bata/go-prompt"
 	"github.com/enuesaa/cpbuf/internal/repository"
@@ -54,8 +55,10 @@ func Buffer(repos repository.Repos, filename string) error {
 		return err
 	}
 	for _, file := range files {
-		if err := registry.CopyToBufDir(file); err != nil {
-			return err
+		if strings.HasPrefix(file.GetFilename(), filename) {
+			if err := registry.CopyToBufDir(file); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
