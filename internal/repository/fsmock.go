@@ -15,6 +15,9 @@ func (repo *FsMockRepository) IsExist(path string) bool {
 }
 
 func (repo *FsMockRepository) IsDir(path string) (bool, error) {
+	if !strings.HasPrefix(path, "/") {
+		path = "/workdir/" + path
+	}
 	result := new(bool)
 	for _, filepath := range repo.Files {
 		if strings.HasPrefix(filepath, path) {
@@ -30,6 +33,7 @@ func (repo *FsMockRepository) IsDir(path string) (bool, error) {
 		}
 	}
 	if result != nil {
+		fmt.Printf("path %s, result %+v", path, *result)
 		return *result, nil
 	}
 
