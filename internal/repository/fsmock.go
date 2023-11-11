@@ -29,7 +29,7 @@ func (repo *FsMockRepository) IsDir(path string) (bool, error) {
 }
 
 func (repo *FsMockRepository) HomeDir() (string, error) {
-	return "/homedir", nil
+	return "/", nil
 }
 
 func (repo *FsMockRepository) WorkDir() (string, error) {
