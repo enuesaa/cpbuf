@@ -8,14 +8,14 @@ import (
 	"github.com/enuesaa/cpbuf/internal/repository"
 )
 
-type BufSrv struct {
-	repos repository.Repos
-}
-
 func NewBufSrv(repos repository.Repos) BufSrv {
 	return BufSrv{
 		repos: repos,
 	}
+}
+
+type BufSrv struct {
+	repos repository.Repos
 }
 
 func (srv *BufSrv) GetBufDirPath() (string, error) {
@@ -23,16 +23,14 @@ func (srv *BufSrv) GetBufDirPath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	path := filepath.Join(homedir, ".cpbuf")
-	return path, nil
+	return filepath.Join(homedir, ".cpbuf"), nil
 }
 
 func (srv *BufSrv) IsBufDirExist() bool {
-	homedir, err := srv.repos.Fs.HomeDir()
+	path, err := srv.GetBufDirPath()
 	if err != nil {
 		return false
 	}
-	path := filepath.Join(homedir, ".cpbuf")
 	return srv.repos.Fs.IsExist(path)
 }
 
@@ -44,7 +42,6 @@ func (srv *BufSrv) CreateBufDir() error {
 	if err != nil {
 		return err
 	}
-
 	return srv.repos.Fs.CreateDir(path)
 }
 
@@ -59,6 +56,11 @@ func (srv *BufSrv) DeleteBufDir() error {
 	return srv.repos.Fs.Remove(path)
 }
 
+func (srv *BufSrv) BufferFile(path string) error {
+	return nil
+}
+
+//Deprecated: use BufferFile instead.
 func (srv *BufSrv) CopyFileToBufDir(filename string) error {
 	registryPath, err := srv.GetBufDirPath()
 	if err != nil {
@@ -95,6 +97,11 @@ func (srv *BufSrv) CopyFileToBufDir(filename string) error {
 	return srv.repos.Fs.CopyFile(filename, dstPath)
 }
 
+func (srv *BufSrv) PasteFile(path string) error {
+	return nil
+}
+
+//Deprecated: use PasteFile instead.
 func (srv *BufSrv) PasteFileToWorkDir(filename string) error {
 	registryPath, err := srv.GetBufDirPath()
 	if err != nil {
@@ -224,4 +231,8 @@ func (srv *BufSrv) ListConflictedFilenames() ([]string, error) {
 	}
 
 	return duplicates, nil
+}
+
+func (srv *BufSrv) AbsPath(path string) (string, error) {
+	return filepath.Abs(path)
 }
