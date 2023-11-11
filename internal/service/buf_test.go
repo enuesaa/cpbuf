@@ -20,6 +20,40 @@ func TestIsBufDirExist(t *testing.T) {
 	assert.Equal(t, true, bufSrv.IsBufDirExist())
 }
 
+func ListFilesInWorkDir(t *testing.T) {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/workdir/a",
+			"/workdir/b",
+			"/workdir/c",
+		},
+	}
+	repos := repository.Repos{
+		Fs: &fsmock,
+	}
+
+	bufSrv := NewBufSrv(repos)
+	actual, _ := bufSrv.ListFilesInBufDir()
+	assert.Equal(t, []string{"a", "b", "c"}, actual)
+}
+
+func TestListFilesInBufDir(t *testing.T) {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/.cpbuf/a",
+			"/.cpbuf/b",
+			"/.cpbuf/c",
+		},
+	}
+	repos := repository.Repos{
+		Fs: &fsmock,
+	}
+
+	bufSrv := NewBufSrv(repos)
+	actual, _ := bufSrv.ListFilesInBufDir()
+	assert.Equal(t, []string{"a", "b", "c"}, actual)
+}
+
 func TestExtractSameFilenamesInWorkDir(t *testing.T) {
 	fsmock := repository.FsMockRepository{
 		Files: []string{

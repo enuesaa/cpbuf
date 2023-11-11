@@ -166,33 +166,6 @@ func (srv *BufSrv) ListFilenames() ([]string, error) {
 	return srv.repos.Fs.ListFiles(bufDirPath)
 }
 
-func (srv *BufSrv) ListConflictedFilenames() ([]string, error) {
-	workdirPath, err := srv.repos.Fs.WorkDir()
-	if err != nil {
-		return make([]string, 0), err
-	}
-
-	workdirFilenames, err := srv.repos.Fs.ListFiles(workdirPath)
-	if err != nil {
-		return make([]string, 0), err
-	}
-
-	bufDirPath, err := srv.GetBufDirPath()
-	if err != nil {
-		return make([]string, 0), err
-	}
-	bufDirFilenames, err := srv.repos.Fs.ListFiles(bufDirPath)
-
-	duplicates := make([]string, 0)
-	for _, filename := range bufDirFilenames {
-		if slices.Contains(workdirFilenames, filename) {
-			duplicates = append(duplicates, filename)
-		}
-	}
-
-	return duplicates, nil
-}
-
 func (srv *BufSrv) RemoveFileInWorkDir(filename string) error {
 	workdirPath, err := srv.repos.Fs.WorkDir()
 	if err != nil {
@@ -232,4 +205,31 @@ func (srv *BufSrv) SelectFileWithPrompt() string {
 	})
 
 	return filename
+}
+
+func (srv *BufSrv) ListConflictedFilenames() ([]string, error) {
+	workdirPath, err := srv.repos.Fs.WorkDir()
+	if err != nil {
+		return make([]string, 0), err
+	}
+
+	workdirFilenames, err := srv.repos.Fs.ListFiles(workdirPath)
+	if err != nil {
+		return make([]string, 0), err
+	}
+
+	bufDirPath, err := srv.GetBufDirPath()
+	if err != nil {
+		return make([]string, 0), err
+	}
+	bufDirFilenames, err := srv.repos.Fs.ListFiles(bufDirPath)
+
+	duplicates := make([]string, 0)
+	for _, filename := range bufDirFilenames {
+		if slices.Contains(workdirFilenames, filename) {
+			duplicates = append(duplicates, filename)
+		}
+	}
+
+	return duplicates, nil
 }
