@@ -3,15 +3,11 @@ package service
 import (
 	"path/filepath"
 	"slices"
+	"strings"
 
 	"github.com/c-bata/go-prompt"
 	"github.com/enuesaa/cpbuf/internal/repository"
 )
-
-type BufferFile struct {}
-func (srv *BufferFile) GetWorkPath() string {
-	return ""
-}
 
 func NewBufSrv(repos repository.Repos) BufSrv {
 	return BufSrv{
@@ -66,6 +62,9 @@ func (srv *BufSrv) GetBufferPath(filename string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if strings.HasPrefix(filename, bufDirPath) {
+		return filename, nil
+	}
 	return filepath.Join(bufDirPath, filename), nil
 }
 
@@ -74,7 +73,18 @@ func (srv *BufSrv) GetWorkPath(filename string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if strings.HasPrefix(filename, workDirPath) {
+		return filename, nil
+	}
 	return filepath.Join(workDirPath, filename), nil
+}
+
+func (srv *BufSrv) TrimWorkPath(workPath string) (string, error) {
+	workDirPath, err := srv.repos.Fs.WorkDir()
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimPrefix(workPath, workDirPath), nil
 }
 
 func (srv *BufSrv) Buffer(filename string) error {
@@ -101,7 +111,11 @@ func (srv *BufSrv) BufferDir(workPath string) error {
 	if err != nil {
 		return err
 	}
-	for _, filename := range files {
+	for _, fpath := range files {
+		filename, err := srv.TrimWorkPath(fpath)
+		if err != nil {
+			return err
+		}
 		bufferPath, err := srv.GetBufferPath(filename)
 		if err != nil {
 			return err
