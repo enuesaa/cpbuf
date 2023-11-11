@@ -1,19 +1,35 @@
 package repository
 
+import (
+	"fmt"
+	"slices"
+	"strings"
+)
+
 type FsMockRepository struct {
-	ListFilesInternal func(path string) []string
+	Files []string
 }
 
 func (repo *FsMockRepository) IsExist(path string) bool {
-	return true
+	return slices.Contains(repo.Files, path)
 }
 
 func (repo *FsMockRepository) IsDir(path string) (bool, error) {
-	return false, nil
+	for _, filepath := range repo.Files {
+		if strings.HasPrefix(filepath, path) {
+			if filepath == path {
+				// this is file. not dir.
+				return false, nil
+			}
+			return true, nil
+		}
+	}
+
+	return false, fmt.Errorf("file or dir does not exist.")
 }
 
 func (repo *FsMockRepository) HomeDir() (string, error) {
-	return "/", nil
+	return "/homedir", nil
 }
 
 func (repo *FsMockRepository) WorkDir() (string, error) {
@@ -33,9 +49,15 @@ func (repo *FsMockRepository) CopyFile(srcPath string, dstPath string) error {
 }
 
 func (repo *FsMockRepository) ListFiles(path string) ([]string, error) {
-	return repo.ListFilesInternal(path), nil
-}
+	list := make([]string, 0)
+	for _, filepath := range repo.Files {
+		if strings.HasPrefix(filepath, path) {
+			rest := strings.TrimPrefix(filepath, path + "/")
+			if !strings.Contains(rest, "/") {
+				list = append(list, filepath)
+			}
+		}
+	}
 
-func (repo *FsMockRepository) ListFilesRecursively(path string) ([]string, error) {
-	return make([]string, 0), nil
+	return list, nil
 }
