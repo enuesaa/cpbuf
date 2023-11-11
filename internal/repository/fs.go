@@ -17,6 +17,7 @@ type FsRepositoryInterface interface {
 }
 type FsRepository struct{}
 
+// TODO: should absolute path.
 func (repo *FsRepository) IsExist(path string) bool {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return false
