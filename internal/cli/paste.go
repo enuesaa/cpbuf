@@ -5,6 +5,7 @@ import (
 
 	"github.com/enuesaa/cpbuf/internal/repository"
 	"github.com/enuesaa/cpbuf/internal/service"
+	"github.com/enuesaa/cpbuf/internal/usecase"
 	"github.com/spf13/cobra"
 )
 
@@ -56,13 +57,13 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 			if len(filenames) == 0 {
 				fmt.Printf("No files were found.\n")
 				// to delete buf dir, do not return here.
-			}
-			for _, filename := range filenames {
-				if err := bufSrv.Paste(filename); err != nil {
+			} else {
+				if err := usecase.Paste(repos); err != nil {
 					fmt.Printf("error: %s\n", err.Error())
-					return
 				}
-				fmt.Printf("pasted: %s\n", filename)
+				for _, filename := range filenames {
+					fmt.Printf("pasted: %s\n", filename)
+				}
 			}
 
 			if keep {

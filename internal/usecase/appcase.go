@@ -80,7 +80,7 @@ func ListConflictedFilenames(repos repository.Repos) ([]string, error) {
 	return list, nil
 }
 
-func Paste(repos repository.Repos, filename string) error {
+func Paste(repos repository.Repos) error {
 	registry := task.NewRegistry(repos)
 	files, err := registry.ListFilesInBufDir()
 	if err != nil {

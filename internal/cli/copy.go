@@ -5,6 +5,7 @@ import (
 
 	"github.com/enuesaa/cpbuf/internal/repository"
 	"github.com/enuesaa/cpbuf/internal/service"
+	"github.com/enuesaa/cpbuf/internal/usecase"
 	"github.com/spf13/cobra"
 )
 
@@ -33,7 +34,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			}
 
 			filename := args[0]
-			if err := bufSrv.Buffer(filename); err != nil {
+			if err := usecase.Buffer(repos, filename); err != nil {
 				fmt.Printf("error: %s\n", err.Error())
 				return
 			}
