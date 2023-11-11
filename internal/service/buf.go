@@ -8,6 +8,11 @@ import (
 	"github.com/enuesaa/cpbuf/internal/repository"
 )
 
+type BufferFile struct {}
+func (srv *BufferFile) GetWorkPath() string {
+	return ""
+}
+
 func NewBufSrv(repos repository.Repos) BufSrv {
 	return BufSrv{
 		repos: repos,
@@ -104,6 +109,7 @@ func (srv *BufSrv) BufferDir(workPath string) error {
 		if err := srv.repos.Fs.CreateDir(filepath.Dir(bufferPath)); err != nil {
 			return err
 		}
+		
 		if err := srv.Buffer(filename); err != nil {
 			return err
 		}
