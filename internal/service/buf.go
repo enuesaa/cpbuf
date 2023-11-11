@@ -57,30 +57,30 @@ func (srv *BufSrv) DeleteBufDir() error {
 }
 
 func (srv *BufSrv) Buffer(filename string) error {
-	isDir, err := srv.repos.Fs.IsDir(filename)
-	if err != nil {
-		return err
-	}
-	if isDir {
-		return srv.BufferDir(filename)
-	}
-	return srv.BufferFile(filename)
-}
-
-func (srv *BufSrv) BufferFile(filename string) error {
-	bufferPath, err := srv.GetBufferPath(filename)
-	if err != nil {
-		return err
-	}
 	workPath, err := srv.GetWorkPath(filename)
 	if err != nil {
 		return err
 	}
+	isDir, err := srv.repos.Fs.IsDir(workPath)
+	if err != nil {
+		return err
+	}
+	if isDir {
+		return srv.BufferDir(workPath)
+	}
+	bufferPath, err := srv.GetBufferPath(filename)
+	if err != nil {
+		return err
+	}
+	return srv.BufferFile(workPath, bufferPath)
+}
+
+func (srv *BufSrv) BufferFile(workPath string, bufferPath string) error {
 	return srv.repos.Fs.CopyFile(workPath, bufferPath)
 }
 
-func (srv *BufSrv) BufferDir(dirname string) error {
-	files, err := srv.ListFilesRecursively(dirname)
+func (srv *BufSrv) BufferDir(workPath string) error {
+	files, err := srv.ListFilesRecursively(workPath)
 	if err != nil {
 		return err
 	}
@@ -115,11 +115,49 @@ func (srv *BufSrv) GetWorkPath(filename string) (string, error) {
 	return filepath.Join(workDirPath, filename), nil
 }
 
-func (srv *BufSrv) PasteFile(path string) error {
+func (srv *BufSrv) Paste(filename string) error {
+	bufferPath, err := srv.GetBufferPath(filename)
+	if err != nil {
+		return err
+	}
+	isDir, err := srv.repos.Fs.IsDir(bufferPath)
+	if err != nil {
+		return err
+	}
+	if isDir {
+		return srv.PasteDir(bufferPath)
+	}
+	workPath, err := srv.GetWorkPath(filename)
+	if err != nil {
+		return err
+	}
+	return srv.PasteFile(bufferPath, workPath)
+}
+
+func (srv *BufSrv) PasteFile(bufferPath string, workPath string) error {
+	return srv.repos.Fs.CopyFile(bufferPath, workPath)
+}
+
+func (srv *BufSrv) PasteDir(bufferPath string) error {
+	files, err := srv.ListFilesRecursively(bufferPath)
+	if err != nil {
+		return err
+	}
+	for _, file := range files {
+		relpath, err := filepath.Rel(bufferPath, file)
+		if err != nil {
+			return err
+		}
+		if err := srv.repos.Fs.CreateDir(filepath.Dir(relpath)); err != nil {
+			return err
+		}
+		if err := srv.Paste(file); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
-//Deprecated: use PasteFile instead.
 func (srv *BufSrv) PasteFileToWorkDir(filename string) error {
 	registryPath, err := srv.GetBufDirPath()
 	if err != nil {
