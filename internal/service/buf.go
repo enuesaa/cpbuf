@@ -79,12 +79,20 @@ func (srv *BufSrv) GetWorkPath(filename string) (string, error) {
 	return filepath.Join(workDirPath, filename), nil
 }
 
-func (srv *BufSrv) TrimWorkPath(workPath string) (string, error) {
+func (srv *BufSrv) ConvertWorkPathToFilename(workPath string) (string, error) {
 	workDirPath, err := srv.repos.Fs.WorkDir()
 	if err != nil {
 		return "", err
 	}
 	return strings.TrimPrefix(workPath, workDirPath), nil
+}
+
+func (srv *BufSrv) ConvertBufferPathToFilename(bufferPath string) (string, error) {
+	bufDirPath, err := srv.GetBufDirPath()
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimPrefix(bufferPath, bufDirPath), nil
 }
 
 func (srv *BufSrv) Buffer(filename string) error {
@@ -112,7 +120,7 @@ func (srv *BufSrv) BufferDir(workPath string) error {
 		return err
 	}
 	for _, fpath := range files {
-		filename, err := srv.TrimWorkPath(fpath)
+		filename, err := srv.ConvertWorkPathToFilename(fpath)
 		if err != nil {
 			return err
 		}
@@ -156,14 +164,18 @@ func (srv *BufSrv) PasteDir(bufferPath string) error {
 		return err
 	}
 	for _, file := range files {
-		relpath, err := filepath.Rel(bufferPath, file)
+		filename, err := srv.ConvertBufferPathToFilename(file)
 		if err != nil {
 			return err
 		}
-		if err := srv.repos.Fs.CreateDir(filepath.Dir(relpath)); err != nil {
+		workPath, err := srv.GetWorkPath(filename)
+		if err != nil {
 			return err
 		}
-		if err := srv.Paste(file); err != nil {
+		if err := srv.repos.Fs.CreateDir(filepath.Dir(workPath)); err != nil {
+			return err
+		}
+		if err := srv.Paste(filename); err != nil {
 			return err
 		}
 	}
