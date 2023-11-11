@@ -1,10 +1,17 @@
 package usecase
 
 import (
+	"path/filepath"
+
 	"github.com/c-bata/go-prompt"
 	"github.com/enuesaa/cpbuf/internal/repository"
 	"github.com/enuesaa/cpbuf/internal/task"
 )
+
+func IsBufDirExist(repos repository.Repos) bool {
+	registry := task.NewRegistry(repos)
+	return registry.IsBufDirExist()
+}
 
 func CreateBufDir(repos repository.Repos) error {
 	registry := task.NewRegistry(repos)
@@ -92,4 +99,13 @@ func Paste(repos repository.Repos) error {
 		}
 	}
 	return nil
+}
+
+func RemoveFileInWorkDir(repos repository.Repos, filename string) error {
+	workDir, err := repos.Fs.WorkDir()
+	if err != nil {
+		return err
+	}
+	workPath := filepath.Join(workDir, filename)
+	return repos.Fs.Remove(workPath)
 }

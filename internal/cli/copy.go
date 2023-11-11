@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/enuesaa/cpbuf/internal/repository"
-	"github.com/enuesaa/cpbuf/internal/service"
 	"github.com/enuesaa/cpbuf/internal/usecase"
 	"github.com/spf13/cobra"
 )
@@ -20,17 +19,14 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				return
 			}
 
-			bufSrv := service.NewBufSrv(repos)
 			if interactive {
-				selected := bufSrv.SelectFileWithPrompt()
+				selected := usecase.SelectFileWithPrompt(repos)
 				args = []string{selected}
 			}
 
-			if !bufSrv.IsBufDirExist() {
-				if err := bufSrv.CreateBufDir(); err != nil {
-					fmt.Printf("error: %s\n", err.Error())
-					return
-				}
+			if err := usecase.CreateBufDir(repos); err != nil {
+				fmt.Printf("error: %s\n", err.Error())
+				return
 			}
 
 			filename := args[0]

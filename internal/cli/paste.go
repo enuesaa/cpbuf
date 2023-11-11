@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/enuesaa/cpbuf/internal/repository"
-	"github.com/enuesaa/cpbuf/internal/service"
 	"github.com/enuesaa/cpbuf/internal/usecase"
 	"github.com/spf13/cobra"
 )
@@ -17,13 +16,12 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 			keep, _ := cmd.Flags().GetBool("keep")
 			overwrite, _ := cmd.Flags().GetBool("overwrite")
 
-			bufSrv := service.NewBufSrv(repos)
-			if !bufSrv.IsBufDirExist() {
+			if !usecase.IsBufDirExist(repos) {
 				fmt.Printf("No files were found.\n")
 				return
 			}
 
-			conflictedFilenames, err := bufSrv.ListConflictedFilenames()
+			conflictedFilenames, err := usecase.ListConflictedFilenames(repos)
 			if err != nil {
 				fmt.Printf("error: %s\n", err.Error())
 				return
@@ -31,7 +29,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 			if len(conflictedFilenames) > 0 {
 				if overwrite {
 					for _, filename := range conflictedFilenames {
-						if err := bufSrv.RemoveFileInWorkDir(filename); err != nil {
+						if err := usecase.RemoveFileInWorkDir(repos, filename); err != nil {
 							fmt.Printf("error: %s\n", err.Error())
 							return
 						}
@@ -49,7 +47,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 				}
 			}
 
-			filenames, err := bufSrv.ListFilesInBufDir()
+			filenames, err := usecase.ListFilesInBufDir(repos)
 			if err != nil {
 				fmt.Printf("error: %s\n", err.Error())
 				return
@@ -70,7 +68,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 				return
 			}
 
-			if err := bufSrv.DeleteBufDir(); err != nil {
+			if err := usecase.DeleteBufDir(repos); err != nil {
 				fmt.Printf("error: %s\n", err.Error())
 			}
 		},

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/enuesaa/cpbuf/internal/repository"
-	"github.com/enuesaa/cpbuf/internal/service"
+	"github.com/enuesaa/cpbuf/internal/usecase"
 	"github.com/spf13/cobra"
 )
 
@@ -13,19 +13,18 @@ func CreateListCmd(repos repository.Repos) *cobra.Command {
 		Use:   "list",
 		Short: "list filenames in buf dir",
 		Run: func(cmd *cobra.Command, args []string) {
-			bufSrv := service.NewBufSrv(repos)
-			if !bufSrv.IsBufDirExist() {
+			if !usecase.IsBufDirExist(repos) {
 				return
 			}
 
-			filenames, err := bufSrv.ListFilesInBufDir()
+			files, err := usecase.ListFilesInBufDir(repos)
 			if err != nil {
 				fmt.Printf("error: %s\n", err.Error())
 				return
 			}
 
-			for _, filename := range filenames {
-				fmt.Printf("%s\n", filename)
+			for _, file := range files {
+				fmt.Printf("%s\n", file.GetFilename())
 			}
 		},
 	}
