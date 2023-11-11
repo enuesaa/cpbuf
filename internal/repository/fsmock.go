@@ -37,14 +37,23 @@ func (repo *FsMockRepository) WorkDir() (string, error) {
 }
 
 func (repo *FsMockRepository) CreateDir(path string) error {
+	repo.Files = append(repo.Files, path)
 	return nil
 }
 
 func (repo *FsMockRepository) Remove(path string) error {
+	list := make([]string, 0)
+	for _, file := range repo.Files {
+		if file != path {
+			list = append(list, file)
+		}
+	}
+	repo.Files = list
 	return nil
 }
 
 func (repo *FsMockRepository) CopyFile(srcPath string, dstPath string) error {
+	repo.Files = append(repo.Files, dstPath)
 	return nil
 }
 

@@ -12,11 +12,9 @@ func NewRepos() Repos {
 	}
 }
 
-func NewMockRepos(files []string) Repos {
+func NewMockRepos(fsmock FsMockRepository) Repos {
 	return Repos{
-		Fs: &FsMockRepository{
-			Files: files,
-		},
+		Fs: &fsmock,
 		Prompt: &PromptRepository{},
 	}
 }

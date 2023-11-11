@@ -8,15 +8,26 @@ import (
 )
 
 func TestGetBufDirPath(t *testing.T) {
-	repos := repository.NewMockRepos([]string{})
+	fsmock := repository.FsMockRepository{ Files: []string{} }
+	repos := repository.NewMockRepos(fsmock)
 	bufSrv := NewBufSrv(repos)
 	actual, _ := bufSrv.GetBufDirPath()
 	assert.Equal(t, "/.cpbuf", actual)
 }
 
 func TestIsBufDirExist(t *testing.T) {
-	repos := repository.NewMockRepos([]string{"/.cpbuf"})
+	fsmock := repository.FsMockRepository{ Files: []string{"/.cpbuf"} }
+	repos := repository.NewMockRepos(fsmock)
 	bufSrv := NewBufSrv(repos)
+	assert.Equal(t, true, bufSrv.IsBufDirExist())
+}
+
+func TestCreateBufDir(t *testing.T) {
+	fsmock := repository.FsMockRepository{ Files: []string{} }
+	repos := repository.NewMockRepos(fsmock)
+
+	bufSrv := NewBufSrv(repos)
+	bufSrv.CreateBufDir()
 	assert.Equal(t, true, bufSrv.IsBufDirExist())
 }
 
@@ -28,9 +39,7 @@ func ListFilesInWorkDir(t *testing.T) {
 			"/workdir/c",
 		},
 	}
-	repos := repository.Repos{
-		Fs: &fsmock,
-	}
+	repos := repository.NewMockRepos(fsmock)
 
 	bufSrv := NewBufSrv(repos)
 	actual, _ := bufSrv.ListFilesInBufDir()
@@ -45,9 +54,7 @@ func TestListFilesInBufDir(t *testing.T) {
 			"/.cpbuf/c",
 		},
 	}
-	repos := repository.Repos{
-		Fs: &fsmock,
-	}
+	repos := repository.NewMockRepos(fsmock)
 
 	bufSrv := NewBufSrv(repos)
 	actual, _ := bufSrv.ListFilesInBufDir()
@@ -67,9 +74,7 @@ func TestExtractSameFilenamesInWorkDir(t *testing.T) {
 			"/workdir/f",
 		},
 	}
-	repos := repository.Repos{
-		Fs: &fsmock,
-	}
+	repos := repository.NewMockRepos(fsmock)
 
 	bufSrv := NewBufSrv(repos)
 	actual, _ := bufSrv.ListConflictedFilenames()
