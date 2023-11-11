@@ -40,6 +40,39 @@ func TestDeleteBufDir(t *testing.T) {
 	assert.Equal(t, false, bufSrv.IsBufDirExist())
 }
 
+func TestListFilesRecursively(t *testing.T) {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/.cpbuf/a",
+			"/.cpbuf/b",
+			"/.cpbuf/b/bb",
+			"/.cpbuf/b/bb/bbb",
+			"/workdir/c",
+		},
+	}
+	repos := repository.NewMockRepos(fsmock)
+
+	bufSrv := NewBufSrv(repos)
+	actual, _ := bufSrv.ListFilesRecursively("/.cpbuf")
+	assert.Equal(t, []string{"/.cpbuf/a", "/.cpbuf/b", "/.cpbuf/b/bb", "/.cpbuf/b/bb/bbb"}, actual)
+}
+
+func TestRemoveFileInWorkDir(t *testing.T) {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/workdir/a",
+			"/workdir/b",
+			"/workdir/c",
+		},
+	}
+	repos := repository.NewMockRepos(fsmock)
+
+	bufSrv := NewBufSrv(repos)
+	bufSrv.RemoveFileInWorkDir("a")
+	actual, _ := bufSrv.ListFilesInWorkDir()
+	assert.Equal(t, []string{"b", "c"}, actual)
+}
+
 func TestListFilesInWorkDir(t *testing.T) {
 	fsmock := repository.FsMockRepository{
 		Files: []string{

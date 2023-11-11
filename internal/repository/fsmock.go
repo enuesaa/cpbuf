@@ -15,14 +15,22 @@ func (repo *FsMockRepository) IsExist(path string) bool {
 }
 
 func (repo *FsMockRepository) IsDir(path string) (bool, error) {
+	result := new(bool)
 	for _, filepath := range repo.Files {
 		if strings.HasPrefix(filepath, path) {
 			if filepath == path {
 				// this is file. not dir.
-				return false, nil
+				if *result != true {
+					*result = false
+				}
+				continue
 			}
-			return true, nil
+			*result = true
+			continue
 		}
+	}
+	if result != nil {
+		return *result, nil
 	}
 
 	return false, fmt.Errorf("file or dir does not exist.")
