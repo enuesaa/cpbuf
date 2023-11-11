@@ -3,6 +3,7 @@ package repository
 import (
 	"io"
 	"os"
+	"path/filepath"
 )
 
 type FsRepositoryInterface interface {
@@ -66,7 +67,6 @@ func (repo *FsRepository) CopyFile(srcPath string, dstPath string) error {
 	return err
 }
 
-// should return absolute path
 func (repo *FsRepository) ListFiles(path string) ([]string, error) {
 	entries, err := os.ReadDir(path)
 	if err != nil {
@@ -77,7 +77,7 @@ func (repo *FsRepository) ListFiles(path string) ([]string, error) {
 		if entry.Name() == ".git" {
 			continue
 		}
-		filenames = append(filenames, entry.Name())
+		filenames = append(filenames, filepath.Join(path, entry.Name()))
 	}
 	return filenames, nil
 }
