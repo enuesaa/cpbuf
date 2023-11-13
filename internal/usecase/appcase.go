@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"fmt"
 	"path/filepath"
 	"strings"
 
@@ -100,6 +101,7 @@ func Paste(repos repository.Repos) error {
 		if err := registry.CopyToWorkDir(file); err != nil {
 			return err
 		}
+		fmt.Printf("pasted: %s\n", file.GetFilename())
 	}
 	return nil
 }

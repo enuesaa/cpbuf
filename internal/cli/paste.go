@@ -59,9 +59,6 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 				if err := usecase.Paste(repos); err != nil {
 					fmt.Printf("error: %s\n", err.Error())
 				}
-				for _, filename := range filenames {
-					fmt.Printf("pasted: %s\n", filename)
-				}
 			}
 
 			if keep {
