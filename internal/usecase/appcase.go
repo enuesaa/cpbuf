@@ -70,6 +70,11 @@ func ListFilesInBufDir(repos repository.Repos) ([]task.Bufferfile, error) {
 	return registry.ListFilesInBufDir()
 }
 
+func ListFilesInWorkDir(repos repository.Repos) ([]task.Workfile, error) {
+	registry := task.NewRegistry(repos)
+	return registry.ListFilesInWorkDir()
+}
+
 func ListConflictedFilenames(repos repository.Repos) ([]string, error) {
 	list := make([]string, 0)
 	registry := task.NewRegistry(repos)
