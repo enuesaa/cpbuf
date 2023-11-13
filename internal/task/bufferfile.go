@@ -8,19 +8,19 @@ import (
 )
 
 func NewBufferfile(repos repository.Repos, path string, bufferDir string, workDir string) Bufferfile {
-	return Bufferfile {
-		repos: repos,
-		path: path,
+	return Bufferfile{
+		repos:     repos,
+		path:      path,
 		bufferDir: bufferDir,
-		workDir: workDir,
+		workDir:   workDir,
 	}
 }
 
 type Bufferfile struct {
-	repos repository.Repos
-	path string
+	repos     repository.Repos
+	path      string
 	bufferDir string
-	workDir string
+	workDir   string
 }
 
 func (f *Bufferfile) IsDir() (bool, error) {
@@ -29,7 +29,7 @@ func (f *Bufferfile) IsDir() (bool, error) {
 }
 
 func (f *Bufferfile) GetFilename() string {
-	return strings.TrimPrefix(f.path, f.bufferDir + "/")
+	return strings.TrimPrefix(f.path, f.bufferDir+"/")
 }
 
 func (f *Bufferfile) GetBufferPath() string {

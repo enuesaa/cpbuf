@@ -7,19 +7,19 @@ import (
 )
 
 func TestIsExist(t *testing.T) {
-	cases := []struct{
-		files []string
-		check string
+	cases := []struct {
+		files  []string
+		check  string
 		expect bool
-	} {
+	}{
 		{
-			files: []string{"/aaa"},
-			check: "/aaa",
+			files:  []string{"/aaa"},
+			check:  "/aaa",
 			expect: true,
 		},
 		{
-			files: []string{"/bbb"},
-			check: "/bbb",
+			files:  []string{"/bbb"},
+			check:  "/bbb",
 			expect: true,
 		},
 	}
@@ -33,19 +33,19 @@ func TestIsExist(t *testing.T) {
 }
 
 func TestIsDir(t *testing.T) {
-	cases := []struct{
-		files []string
-		check string
+	cases := []struct {
+		files  []string
+		check  string
 		expect bool
-	} {
+	}{
 		{
-			files: []string{"/aaa", "/aaa/bb"},
-			check: "/aaa",
+			files:  []string{"/aaa", "/aaa/bb"},
+			check:  "/aaa",
 			expect: true,
 		},
 		{
-			files: []string{"/bbb"},
-			check: "/bbb",
+			files:  []string{"/bbb"},
+			check:  "/bbb",
 			expect: false,
 		},
 	}
@@ -60,19 +60,19 @@ func TestIsDir(t *testing.T) {
 }
 
 func TestListFiles(t *testing.T) {
-	cases := []struct{
-		files []string
-		check string
+	cases := []struct {
+		files  []string
+		check  string
 		expect []string
-	} {
+	}{
 		{
-			files: []string{"/aaa", "/aaa/bb", "/aaa/cc"},
-			check: "/aaa",
+			files:  []string{"/aaa", "/aaa/bb", "/aaa/cc"},
+			check:  "/aaa",
 			expect: []string{"/aaa/bb", "/aaa/cc"},
 		},
 		{
-			files: []string{"/bbb"},
-			check: "/bbb",
+			files:  []string{"/bbb"},
+			check:  "/bbb",
 			expect: []string{},
 		},
 	}

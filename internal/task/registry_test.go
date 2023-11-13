@@ -8,7 +8,7 @@ import (
 )
 
 func TestGetBufDirPath(t *testing.T) {
-	fsmock := repository.FsMockRepository{ Files: []string{} }
+	fsmock := repository.FsMockRepository{Files: []string{}}
 	repos := repository.NewMockRepos(fsmock)
 	registry := NewRegistry(repos)
 	actual, _ := registry.GetBufDirPath()
@@ -16,14 +16,14 @@ func TestGetBufDirPath(t *testing.T) {
 }
 
 func TestIsBufDirExist(t *testing.T) {
-	fsmock := repository.FsMockRepository{ Files: []string{"/.cpbuf"} }
+	fsmock := repository.FsMockRepository{Files: []string{"/.cpbuf"}}
 	repos := repository.NewMockRepos(fsmock)
 	registry := NewRegistry(repos)
 	assert.Equal(t, true, registry.IsBufDirExist())
 }
 
 func TestCreateBufDir(t *testing.T) {
-	fsmock := repository.FsMockRepository{ Files: []string{} }
+	fsmock := repository.FsMockRepository{Files: []string{}}
 	repos := repository.NewMockRepos(fsmock)
 
 	registry := NewRegistry(repos)
@@ -32,7 +32,7 @@ func TestCreateBufDir(t *testing.T) {
 }
 
 func TestDeleteBufDir(t *testing.T) {
-	fsmock := repository.FsMockRepository{ Files: []string{"/.cpbuf"} }
+	fsmock := repository.FsMockRepository{Files: []string{"/.cpbuf"}}
 	repos := repository.NewMockRepos(fsmock)
 
 	registry := NewRegistry(repos)
@@ -98,7 +98,6 @@ func TestCopyToBufDir(t *testing.T) {
 	assert.Equal(t, []string{"/.cpbuf/a", "/.cpbuf/b"}, actual)
 }
 
-
 func TestListFilesRecursively(t *testing.T) {
 	fsmock := repository.FsMockRepository{
 		Files: []string{
@@ -115,4 +114,3 @@ func TestListFilesRecursively(t *testing.T) {
 	actual, _ := registry.ListFilesRecursively("/.cpbuf")
 	assert.Equal(t, []string{"/.cpbuf/a", "/.cpbuf/b", "/.cpbuf/b/bb", "/.cpbuf/b/bb/bbb"}, actual)
 }
-

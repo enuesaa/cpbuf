@@ -8,18 +8,18 @@ import (
 )
 
 func NewWorkfile(repos repository.Repos, path string, workDir string, bufferDir string) Workfile {
-	return Workfile {
-		repos: repos,
-		path: path,
-		workDir: workDir,
+	return Workfile{
+		repos:     repos,
+		path:      path,
+		workDir:   workDir,
 		bufferDir: bufferDir,
 	}
 }
 
 type Workfile struct {
-	repos repository.Repos
-	path string
-	workDir string
+	repos     repository.Repos
+	path      string
+	workDir   string
 	bufferDir string
 }
 
@@ -32,7 +32,7 @@ func (f *Workfile) IsDir() (bool, error) {
 }
 
 func (f *Workfile) GetFilename() string {
-	return strings.TrimPrefix(f.path, f.workDir + "/")
+	return strings.TrimPrefix(f.path, f.workDir+"/")
 }
 
 func (f *Workfile) GetBufferPath() string {

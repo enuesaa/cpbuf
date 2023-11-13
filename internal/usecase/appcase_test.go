@@ -26,7 +26,6 @@ func TestListConflictedFilenames(t *testing.T) {
 	assert.Equal(t, []string{"a", "d"}, actual)
 }
 
-
 func TestRemoveFileInWorkDir(t *testing.T) {
 	fsmock := repository.FsMockRepository{
 		Files: []string{

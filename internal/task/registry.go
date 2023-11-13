@@ -8,7 +8,7 @@ import (
 )
 
 func NewRegistry(repos repository.Repos) Registry {
-	return Registry {
+	return Registry{
 		repos: repos,
 	}
 }
