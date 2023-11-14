@@ -60,6 +60,7 @@ func Buffer(repos repository.Repos, filename string) error {
 			if err := registry.CopyToBufDir(file); err != nil {
 				return err
 			}
+			fmt.Printf("copied: %s\n", file.GetFilename())
 		}
 	}
 	return nil
