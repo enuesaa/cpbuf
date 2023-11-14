@@ -56,7 +56,7 @@ func Buffer(repos repository.Repos, filename string) error {
 		return err
 	}
 	for _, file := range files {
-		if strings.HasPrefix(file.GetFilename(), filename) {
+		if strings.HasPrefix(file.GetFilename(), filename) || filename == "." {
 			if err := registry.CopyToBufDir(file); err != nil {
 				return err
 			}
