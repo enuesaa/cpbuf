@@ -19,7 +19,7 @@ func main() {
 	}
 	app.AddCommand(cli.CreateCopyCmd(repos))
 	app.AddCommand(cli.CreatePasteCmd(repos))
-	app.AddCommand(cli.CreateClearCmd(repos))
+	app.AddCommand(cli.CreateResetCmd(repos))
 	app.AddCommand(cli.CreateListCmd(repos))
 
 	// disable default

@@ -8,9 +8,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CreateClearCmd(repos repository.Repos) *cobra.Command {
+func CreateResetCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "clear",
+		Use:   "reset",
 		Short: "clear buf dir",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := usecase.DeleteBufDir(repos); err != nil {
