@@ -11,7 +11,7 @@ import (
 func CreateResetCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "reset",
-		Short: "clear buf dir",
+		Short: "Clear buf dir",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := usecase.DeleteBufDir(repos); err != nil {
 				fmt.Printf("error: %s\n", err.Error())

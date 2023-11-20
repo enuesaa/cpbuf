@@ -11,7 +11,8 @@ import (
 func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "paste",
-		Short: "paste files",
+		Short: "Paste files to current dir. Alias: p",
+		Aliases: []string{"p"},
 		Run: func(cmd *cobra.Command, args []string) {
 			keep, _ := cmd.Flags().GetBool("keep")
 			overwrite, _ := cmd.Flags().GetBool("overwrite")

@@ -11,7 +11,8 @@ import (
 func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "copy <filename>",
-		Short: "copy file to buf dir",
+		Aliases: []string{"c"},
+		Short: "Copy file to buf dir. Alias: c",
 		Run: func(cmd *cobra.Command, args []string) {
 			interactive, _ := cmd.Flags().GetBool("interactive")
 			if !interactive && len(args) == 0 {
