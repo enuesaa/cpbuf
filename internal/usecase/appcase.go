@@ -120,3 +120,13 @@ func RemoveFileInWorkDir(repos repository.Repos, filename string) error {
 	workPath := filepath.Join(workDir, filename)
 	return repos.Fs.Remove(workPath)
 }
+
+func RemoveFileInBufDir(repos repository.Repos, filename string) error {
+	registry := task.NewRegistry(repos)
+	bufDir, err := registry.GetBufDirPath()
+	if err != nil {
+		return err
+	}
+	bufFilePath := filepath.Join(bufDir, filename)
+	return repos.Fs.Remove(bufFilePath)
+}
