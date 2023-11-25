@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/enuesaa/cpbuf/internal/cli"
 	"github.com/enuesaa/cpbuf/internal/repository"
 	"github.com/spf13/cobra"
@@ -8,6 +10,7 @@ import (
 
 func main() {
 	repos := repository.NewRepos()
+	log.SetFlags(0)
 
 	app := &cobra.Command{
 		Use:     "cpbuf",

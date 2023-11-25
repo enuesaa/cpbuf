@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/enuesaa/cpbuf/internal/repository"
 	"github.com/enuesaa/cpbuf/internal/usecase"
@@ -19,7 +20,7 @@ func CreateListCmd(repos repository.Repos) *cobra.Command {
 
 			files, err := usecase.ListFilesInBufDir(repos)
 			if err != nil {
-				fmt.Printf("Error: failed to list files in buf dir.\n%s\n", err.Error())
+				log.Printf("Error: failed to list files in buf dir.\n%s\n", err.Error())
 				return
 			}
 

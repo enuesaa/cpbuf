@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/enuesaa/cpbuf/internal/repository"
 	"github.com/enuesaa/cpbuf/internal/usecase"
@@ -16,13 +16,13 @@ func CreateResetCmd(repos repository.Repos) *cobra.Command {
 			if len(args) > 0 {
 				filename := args[0]
 				if err := usecase.RemoveFileInBufDir(repos, filename); err != nil {
-					fmt.Printf("Error: failed to remove a file in buf dir.\n%s\n", err.Error())
+					log.Printf("Error: failed to remove a file in buf dir.\n%s\n", err.Error())
 				}
 				return
 			}
 
 			if err := usecase.DeleteBufDir(repos); err != nil {
-				fmt.Printf("Error: failed to clear buf dir.\n%s\n", err.Error())
+				log.Printf("Error: failed to clear buf dir.\n%s\n", err.Error())
 			}
 		},
 	}
