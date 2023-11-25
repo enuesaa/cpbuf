@@ -7,7 +7,7 @@ import (
 	"github.com/enuesaa/cpbuf/internal/repository"
 )
 
-func NewWorkfile(repos repository.Repos, path string, workDir string, bufferDir string) Workfile {
+func NewWorkfile(repos repository.Repos, path string, bufferDir string, workDir string) Workfile {
 	return Workfile{
 		repos:     repos,
 		path:      path,

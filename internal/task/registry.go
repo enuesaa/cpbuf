@@ -91,7 +91,7 @@ func (srv *Registry) ListFilesInWorkDir() ([]Workfile, error) {
 
 	list := make([]Workfile, 0)
 	for _, file := range files {
-		list = append(list, NewWorkfile(srv.repos, file, workDir, bufDir))
+		list = append(list, NewWorkfile(srv.repos, file, bufDir, workDir))
 	}
 	return list, nil
 }

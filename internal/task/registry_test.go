@@ -91,11 +91,31 @@ func TestCopyToBufDir(t *testing.T) {
 	repos := repository.NewMockRepos(fsmock)
 
 	registry := NewRegistry(repos)
-	registry.CopyToBufDir(NewWorkfile(repos, "/workdir/a", "/workdir", "/.cpbuf"))
-	registry.CopyToBufDir(NewWorkfile(repos, "/workdir/b", "/workdir", "/.cpbuf"))
+	registry.CopyToBufDir(NewWorkfile(repos, "/workdir/a", "/.cpbuf", "/workdir"))
+	registry.CopyToBufDir(NewWorkfile(repos, "/workdir/b", "/.cpbuf", "/workdir"))
 
 	actual, _ := registry.ListFilesRecursively("/.cpbuf")
 	assert.Equal(t, []string{"/.cpbuf/a", "/.cpbuf/b"}, actual)
+}
+
+func TestCopyToWorkDir(t *testing.T) {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/.cpbuf/a",
+			"/.cpbuf/b",
+			"/.cpbuf/b/bb",
+			"/.cpbuf/b/bb/bbb",
+			"/.cpbuf/c",
+		},
+	}
+	repos := repository.NewMockRepos(fsmock)
+
+	registry := NewRegistry(repos)
+	registry.CopyToWorkDir(NewBufferfile(repos, "/.cpbuf/a", "/.cpbuf", "/workdir"))
+	registry.CopyToWorkDir(NewBufferfile(repos, "/.cpbuf/b", "/.cpbuf", "/workdir"))
+
+	actual, _ := registry.ListFilesRecursively("/workdir")
+	assert.Equal(t, []string{"/workdir/a", "/workdir/b"}, actual)
 }
 
 func TestListFilesRecursively(t *testing.T) {
@@ -135,3 +155,22 @@ func TestRemoveFileInWorkDir(t *testing.T) {
 	assert.Equal(t, []string{"b", "c"}, actual)
 }
 
+func TestRemoveFileInBufDir(t *testing.T) {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/.cpbuf/a",
+			"/.cpbuf/b",
+			"/.cpbuf/c",
+		},
+	}
+	repos := repository.NewMockRepos(fsmock)
+
+	registry := NewRegistry(repos)
+	registry.RemoveFileInBufDir("a")
+	files, _ := registry.ListFilesInBufDir()
+	actual := make([]string, 0)
+	for _, file := range files {
+		actual = append(actual, file.GetFilename())
+	}
+	assert.Equal(t, []string{"b", "c"}, actual)
+}
