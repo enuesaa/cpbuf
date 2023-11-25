@@ -21,7 +21,9 @@ func main() {
 		},
 	}
 	app.AddCommand(cli.CreateCopyCmd(repos))
+	app.AddCommand(cli.CreateCCmd(repos))
 	app.AddCommand(cli.CreatePasteCmd(repos))
+	app.AddCommand(cli.CreatePCmd(repos))
 	app.AddCommand(cli.CreateResetCmd(repos))
 	app.AddCommand(cli.CreateListCmd(repos))
 
