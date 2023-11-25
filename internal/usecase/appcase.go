@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"fmt"
-	"path/filepath"
 	"strings"
 
 	"github.com/c-bata/go-prompt"
@@ -113,20 +112,11 @@ func Paste(repos repository.Repos) error {
 }
 
 func RemoveFileInWorkDir(repos repository.Repos, filename string) error {
-	workDir, err := repos.Fs.WorkDir()
-	if err != nil {
-		return err
-	}
-	workPath := filepath.Join(workDir, filename)
-	return repos.Fs.Remove(workPath)
+	registry := task.NewRegistry(repos)
+	return registry.RemoveFileInWorkDir(filename)
 }
 
 func RemoveFileInBufDir(repos repository.Repos, filename string) error {
 	registry := task.NewRegistry(repos)
-	bufDir, err := registry.GetBufDirPath()
-	if err != nil {
-		return err
-	}
-	bufFilePath := filepath.Join(bufDir, filename)
-	return repos.Fs.Remove(bufFilePath)
+	return registry.RemoveFileInBufDir(filename)
 }

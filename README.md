@@ -16,17 +16,15 @@ $ cpbuf --help
 A CLI tool to copy and paste files.
 `cpbuf` uses buf-dir to save files temporarily.
 
-Usage:
-  cpbuf [flags]
-  cpbuf [command]
-
 Available Commands:
-  copy        Copy file to buf dir. Alias: c
+  c           Alias for `copy`
+  copy        Copy file to buf dir
   list        List files in buf dir
+  p           Alias for `paste`
   paste       Paste files to current dir. Alias: p
-  reset       Clear buf dir
+  reset       Clear buffered file. If filename is not passed, clear all files in buf dir.
 
 Flags:
       --help      Show help information
-  -v, --version   version for cpbuf
+      --version   Show version
 ```

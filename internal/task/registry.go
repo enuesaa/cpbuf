@@ -157,3 +157,21 @@ func (srv *Registry) ListFilesRecursively(path string) ([]string, error) {
 	slices.Sort(files)
 	return slices.Compact(files), nil
 }
+
+func (srv *Registry) RemoveFileInWorkDir(filename string) error {
+	workDir, err := srv.repos.Fs.WorkDir()
+	if err != nil {
+		return err
+	}
+	workPath := filepath.Join(workDir, filename)
+	return srv.repos.Fs.Remove(workPath)
+}
+
+func (srv *Registry) RemoveFileInBufDir(filename string) error {
+	bufDir, err := srv.GetBufDirPath()
+	if err != nil {
+		return err
+	}
+	bufFilePath := filepath.Join(bufDir, filename)
+	return srv.repos.Fs.Remove(bufFilePath)
+}

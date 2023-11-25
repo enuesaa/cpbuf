@@ -114,3 +114,24 @@ func TestListFilesRecursively(t *testing.T) {
 	actual, _ := registry.ListFilesRecursively("/.cpbuf")
 	assert.Equal(t, []string{"/.cpbuf/a", "/.cpbuf/b", "/.cpbuf/b/bb", "/.cpbuf/b/bb/bbb"}, actual)
 }
+
+func TestRemoveFileInWorkDir(t *testing.T) {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/workdir/a",
+			"/workdir/b",
+			"/workdir/c",
+		},
+	}
+	repos := repository.NewMockRepos(fsmock)
+
+	registry := NewRegistry(repos)
+	registry.RemoveFileInWorkDir("a")
+	files, _ := registry.ListFilesInWorkDir()
+	actual := make([]string, 0)
+	for _, file := range files {
+		actual = append(actual, file.GetFilename())
+	}
+	assert.Equal(t, []string{"b", "c"}, actual)
+}
+
