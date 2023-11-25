@@ -19,7 +19,7 @@ func CreateListCmd(repos repository.Repos) *cobra.Command {
 
 			files, err := usecase.ListFilesInBufDir(repos)
 			if err != nil {
-				fmt.Printf("error: %s\n", err.Error())
+				fmt.Printf("Error: failed to list files in buf dir.\n%s\n", err.Error())
 				return
 			}
 

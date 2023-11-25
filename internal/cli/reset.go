@@ -16,13 +16,13 @@ func CreateResetCmd(repos repository.Repos) *cobra.Command {
 			if len(args) > 0 {
 				filename := args[0]
 				if err := usecase.RemoveFileInBufDir(repos, filename); err != nil {
-					fmt.Printf("error: %s\n", err.Error())
+					fmt.Printf("Error: failed to remove a file in buf dir.\n%s\n", err.Error())
 				}
 				return
 			}
 
 			if err := usecase.DeleteBufDir(repos); err != nil {
-				fmt.Printf("error: %s\n", err.Error())
+				fmt.Printf("Error: failed to clear buf dir.\n%s\n", err.Error())
 			}
 		},
 	}
