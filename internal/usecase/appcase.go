@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/c-bata/go-prompt"
@@ -48,7 +49,7 @@ func SelectFileWithPrompt(repos repository.Repos) string {
 	return filename
 }
 
-func Buffer(repos repository.Repos, filename string) error {
+func Buffer(repos repository.Repos, filename string, force bool) error {
 	registry := task.NewRegistry(repos)
 	files, err := registry.ListFilesInWorkDir()
 	if err != nil {
@@ -57,7 +58,10 @@ func Buffer(repos repository.Repos, filename string) error {
 	for _, file := range files {
 		if strings.HasPrefix(file.GetFilename(), filename) || filename == "." {
 			if err := registry.CopyToBufDir(file); err != nil {
-				return err
+				log.Printf("Error: %s\n", err)
+				if !force {
+					return err
+				}
 			}
 			fmt.Printf("copied: %s\n", file.GetFilename())
 		}

@@ -18,6 +18,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				log.Printf("Error: please pass filename to copy.\n")
 				return
 			}
+			force, _ := cmd.Flags().GetBool("force")
 
 			if interactive {
 				selected := usecase.SelectFileWithPrompt(repos)
@@ -30,13 +31,18 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			}
 
 			filename := args[0]
-			if err := usecase.Buffer(repos, filename); err != nil {
+			if err := usecase.Buffer(repos, filename, force); err != nil {
 				log.Printf("Error: failed to copy files to buf dir.\n%s\n", err.Error())
 				return
 			}
 		},
 	}
 	cmd.Flags().BoolP("interactive", "i", false, "start interactive prompt and select file.")
+
+	// TODO
+	// Currently, an error occurs when copying a symlink.
+	// This flag is used to skip those errors.
+	cmd.Flags().Bool("force", false, "skip errors [Experimental]")
 
 	return cmd
 }
