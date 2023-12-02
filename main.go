@@ -8,18 +8,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func main() {
-	repos := repository.NewRepos()
+func init() {
 	log.SetFlags(0)
+}
 
+func main() {
 	app := &cobra.Command{
 		Use:     "cpbuf",
 		Short:   "A CLI tool to copy and paste files.\n`cpbuf` uses buf-dir to save files temporarily.",
 		Version: "0.0.7",
-		Run: func(cmd *cobra.Command, args []string) {
-			cmd.Help()
-		},
 	}
+
+	repos := repository.NewRepos()
 	app.AddCommand(cli.CreateCopyCmd(repos))
 	app.AddCommand(cli.CreateCCmd(repos))
 	app.AddCommand(cli.CreatePasteCmd(repos))
