@@ -39,6 +39,10 @@ func (repo *FsMockRepository) IsDir(path string) (bool, error) {
 	return false, fmt.Errorf("file or dir does not exist.")
 }
 
+func (repo *FsMockRepository) IsBrokenSymlink(path string) (bool, error) {
+	return false, nil
+}
+
 func (repo *FsMockRepository) HomeDir() (string, error) {
 	return "/", nil
 }
