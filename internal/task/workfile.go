@@ -28,7 +28,14 @@ func (f *Workfile) IsDir() (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	return f.repos.Fs.IsDir(path)
+	isDir, err := f.repos.Fs.IsDir(path)
+	if err != nil {
+		if isBrokenSymlink, e := f.IsBrokenSymlink(); e != nil || !isBrokenSymlink {
+			return false, err
+		}
+		isDir = false
+	}
+	return isDir, err
 }
 
 func (f *Workfile) GetFilename() string {
@@ -41,4 +48,12 @@ func (f *Workfile) GetBufferPath() string {
 
 func (f *Workfile) GetWorkPath() (string, error) {
 	return filepath.Join(f.workDir, f.GetFilename()), nil
+}
+
+func (f *Workfile) IsBrokenSymlink() (bool, error) {
+	path, err := f.GetWorkPath()
+	if err != nil {
+		return false, err
+	}
+	return f.repos.Fs.IsBrokenSymlink(path)
 }
