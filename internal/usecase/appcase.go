@@ -49,7 +49,7 @@ func SelectFileWithPrompt(repos repository.Repos) string {
 	return filename
 }
 
-func Buffer(repos repository.Repos, filename string, force bool) error {
+func Buffer(repos repository.Repos, filename string) error {
 	registry := task.NewRegistry(repos)
 	files, err := registry.ListFilesInWorkDir()
 	if err != nil {
