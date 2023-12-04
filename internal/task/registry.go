@@ -143,7 +143,10 @@ func (srv *Registry) ListFilesRecursively(path string) ([]string, error) {
 	for _, fpath := range files {
 		isDir, err := srv.repos.Fs.IsDir(fpath)
 		if err != nil {
-			return make([]string, 0), err
+			if isBrokenSymlink, e := srv.repos.Fs.IsBrokenSymlink(fpath); e != nil || !isBrokenSymlink {
+				return make([]string, 0), err
+			}
+			isDir = false
 		}
 		if isDir {
 			innerList, err := srv.ListFilesRecursively(fpath)

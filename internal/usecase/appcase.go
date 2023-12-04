@@ -58,10 +58,11 @@ func Buffer(repos repository.Repos, filename string, force bool) error {
 	for _, file := range files {
 		if strings.HasPrefix(file.GetFilename(), filename) || filename == "." {
 			if err := registry.CopyToBufDir(file); err != nil {
-				log.Printf("Error: %s\n", err)
-				if !force {
+				if isBrokenSymlink, e := file.IsBrokenSymlink(); e != nil || !isBrokenSymlink {
+					log.Printf("Error: %s\n", err)
 					return err
 				}
+				fmt.Printf("WARNING: %s was ignored because this file seems to be a broken symlink.\n", file.GetFilename())
 			}
 			fmt.Printf("copied: %s\n", file.GetFilename())
 		}
