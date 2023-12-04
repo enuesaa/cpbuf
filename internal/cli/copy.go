@@ -23,6 +23,10 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				args = []string{selected}
 			}
 
+			// TODO
+			// check buf dir is empty here.
+			// if not empty, print warning message.
+
 			if err := usecase.CreateBufDir(repos); err != nil {
 				log.Printf("Error: failed to create buf dir.\n%s\n", err.Error())
 				return
