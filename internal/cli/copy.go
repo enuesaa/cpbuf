@@ -16,8 +16,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			interactive, _ := cmd.Flags().GetBool("interactive")
 			if !interactive && len(args) == 0 {
-				log.Printf("Error: please pass filename to copy.\n")
-				return
+				log.Fatalf("Error: please pass filename to copy.\n")
 			}
 			if interactive {
 				selected := usecase.SelectFileWithPrompt(repos)
@@ -25,14 +24,12 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			}
 	
 			if err := usecase.CreateBufDir(repos); err != nil {
-				log.Printf("Error: failed to create buf dir.\n%s\n", err.Error())
-				return
+				log.Fatalf("Error: failed to create buf dir.\n%s\n", err.Error())
 			}
 
 			existFiles, err := usecase.ListFilesInBufDir(repos)
 			if err != nil {
-				log.Printf("Error: failed to list files in buf dir.\n")
-				return
+				log.Fatalf("Error: failed to list files in buf dir.\n")
 			}
 			for _, file := range existFiles {
 				fmt.Printf("buffered: %s\n", file.GetFilename())
@@ -40,8 +37,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 
 			filename := args[0]
 			if err := usecase.Buffer(repos, filename); err != nil {
-				log.Printf("Error: failed to copy files to buf dir.\n%s\n", err.Error())
-				return
+				log.Fatalf("Error: failed to copy files to buf dir.\n%s\n", err.Error())
 			}
 		},
 	}
