@@ -16,7 +16,7 @@ func main() {
 	app := &cobra.Command{
 		Use:     "cpbuf",
 		Short:   "A CLI tool to copy and paste files.\n`cpbuf` uses buf-dir to save files temporarily.",
-		Version: "0.0.8",
+		Version: "0.0.9",
 	}
 
 	repos := repository.NewRepos()
@@ -25,6 +25,7 @@ func main() {
 	app.AddCommand(cli.CreatePasteCmd(repos))
 	app.AddCommand(cli.CreatePCmd(repos))
 	app.AddCommand(cli.CreateResetCmd(repos))
+	app.AddCommand(cli.CreateRCmd(repos))
 	app.AddCommand(cli.CreateListCmd(repos))
 
 	// disable default
