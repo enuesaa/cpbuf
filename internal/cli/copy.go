@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/enuesaa/cpbuf/internal/repository"
@@ -22,14 +23,19 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				selected := usecase.SelectFileWithPrompt(repos)
 				args = []string{selected}
 			}
-
-			// TODO
-			// check buf dir is empty here.
-			// if not empty, print warning message.
-
+	
 			if err := usecase.CreateBufDir(repos); err != nil {
 				log.Printf("Error: failed to create buf dir.\n%s\n", err.Error())
 				return
+			}
+
+			existFiles, err := usecase.ListFilesInBufDir(repos)
+			if err != nil {
+				log.Printf("Error: failed to list files in buf dir.\n")
+				return
+			}
+			for _, file := range existFiles {
+				fmt.Printf("buffered: %s\n", file.GetFilename())
 			}
 
 			filename := args[0]
