@@ -19,10 +19,12 @@ A CLI tool to copy and paste files.
 Available Commands:
   c           Alias for `copy`
   copy        Copy file to buf dir
+  l           Alias for `list`
   list        List files in buf dir
   p           Alias for `paste`
-  paste       Paste files to current dir. Alias: p
-  reset       Clear buffered file. If filename is not passed, clear all files in buf dir.
+  paste       Paste files to current dir
+  r           Alias for `reset`
+  reset       Clear buffered files
 
 Flags:
       --help      Show help information
