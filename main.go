@@ -27,6 +27,7 @@ func main() {
 	app.AddCommand(cli.CreateResetCmd(repos))
 	app.AddCommand(cli.CreateRCmd(repos))
 	app.AddCommand(cli.CreateListCmd(repos))
+	app.AddCommand(cli.CreateLCmd(repos))
 
 	// disable default
 	app.SetHelpCommand(&cobra.Command{Hidden: true})
