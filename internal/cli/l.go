@@ -6,7 +6,7 @@ import (
 )
 
 func CreateLCmd(repos repository.Repos) *cobra.Command {
-	copyCmd := CreateCopyCmd(repos)
+	copyCmd := CreateListCmd(repos)
 	copyCmd.Use = "l"
 	copyCmd.Short = "Alias for `list`"
 
