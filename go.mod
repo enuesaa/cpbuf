@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/c-bata/go-prompt v0.2.6
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/term v0.13.0
 )
