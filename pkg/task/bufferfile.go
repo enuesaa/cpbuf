@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/enuesaa/cpbuf/internal/repository"
+	"github.com/enuesaa/cpbuf/pkg/repository"
 )
 
 func NewBufferfile(repos repository.Repos, path string, bufferDir string, workDir string) Bufferfile {

@@ -3,7 +3,7 @@ package task
 import (
 	"testing"
 
-	"github.com/enuesaa/cpbuf/internal/repository"
+	"github.com/enuesaa/cpbuf/pkg/repository"
 	"github.com/stretchr/testify/assert"
 )
 

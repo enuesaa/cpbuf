@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/enuesaa/cpbuf/internal/cli"
-	"github.com/enuesaa/cpbuf/internal/repository"
+	"github.com/enuesaa/cpbuf/pkg/cli"
+	"github.com/enuesaa/cpbuf/pkg/repository"
 	"github.com/spf13/cobra"
 )
 

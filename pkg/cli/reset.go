@@ -3,8 +3,8 @@ package cli
 import (
 	"log"
 
-	"github.com/enuesaa/cpbuf/internal/repository"
-	"github.com/enuesaa/cpbuf/internal/usecase"
+	"github.com/enuesaa/cpbuf/pkg/repository"
+	"github.com/enuesaa/cpbuf/pkg/usecase"
 	"github.com/spf13/cobra"
 )
 

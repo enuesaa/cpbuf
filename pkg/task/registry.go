@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"slices"
 
-	"github.com/enuesaa/cpbuf/internal/repository"
+	"github.com/enuesaa/cpbuf/pkg/repository"
 )
 
 func NewRegistry(repos repository.Repos) Registry {

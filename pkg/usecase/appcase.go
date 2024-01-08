@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/enuesaa/cpbuf/internal/repository"
-	"github.com/enuesaa/cpbuf/internal/task"
+	"github.com/enuesaa/cpbuf/pkg/repository"
+	"github.com/enuesaa/cpbuf/pkg/task"
 )
 
 func IsBufDirExist(repos repository.Repos) bool {
