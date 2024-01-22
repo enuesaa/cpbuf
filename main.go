@@ -32,6 +32,7 @@ func main() {
 	// disable default
 	app.SetHelpCommand(&cobra.Command{Hidden: true})
 	app.CompletionOptions.DisableDefaultCmd = true
+	app.SilenceErrors = true
 	app.SilenceUsage = true
 	app.PersistentFlags().SortFlags = false
 	app.PersistentFlags().BoolP("help", "", false, "Show help information")
@@ -51,5 +52,7 @@ Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
 {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}
 `)
 
-	app.Execute()
+	if err := app.Execute(); err != nil {
+		log.Panicf("Error: %s", err.Error())
+	}
 }

@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/enuesaa/cpbuf/pkg/repository"
 	"github.com/enuesaa/cpbuf/pkg/usecase"
@@ -13,10 +12,10 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "copy <filename>",
 		Short: "Copy file to buf dir",
-		Run: func(cmd *cobra.Command, args []string) {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			interactive, _ := cmd.Flags().GetBool("interactive")
 			if !interactive && len(args) == 0 {
-				log.Fatalf("Error: please pass filename to copy.\n")
+				return fmt.Errorf("please pass filename to copy.\n")
 			}
 			if interactive {
 				selected := usecase.SelectFileWithPrompt(repos)
@@ -24,12 +23,12 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			}
 	
 			if err := usecase.CreateBufDir(repos); err != nil {
-				log.Fatalf("Error: failed to create buf dir.\n%s\n", err.Error())
+				return fmt.Errorf("failed to create buf dir.\n%s\n", err.Error())
 			}
 
 			existFiles, err := usecase.ListFilesInBufDir(repos)
 			if err != nil {
-				log.Fatalf("Error: failed to list files in buf dir.\n")
+				return fmt.Errorf("failed to list files in buf dir.\n")
 			}
 			for _, file := range existFiles {
 				fmt.Printf("buffered: %s\n", file.GetFilename())
@@ -37,10 +36,11 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 
 			for _, filename := range args {
 				if err := usecase.Buffer(repos, filename); err != nil {
-					log.Fatalf("Error: failed to copy files to buf dir.\n%s\n", err.Error())
+					return fmt.Errorf("failed to copy files to buf dir.\n%s\n", err.Error())
 				}
 				fmt.Printf("copied: %s\n", filename)
 			}
+			return nil
 		},
 	}
 	cmd.Flags().BoolP("interactive", "i", false, "start interactive prompt and select file.")
