@@ -30,15 +30,17 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			if err != nil {
 				return fmt.Errorf("failed to list files in buf dir.\n")
 			}
-			for _, file := range existFiles {
-				fmt.Printf("buffered: %s\n", file.GetFilename())
-			}
-
 			for _, filename := range args {
 				if err := usecase.Buffer(repos, filename); err != nil {
 					return fmt.Errorf("failed to copy files to buf dir.\n%s\n", err.Error())
 				}
 				fmt.Printf("copied: %s\n", filename)
+			}
+
+			fmt.Printf("\n")
+			fmt.Printf("WARNING: These files already buffered.\n")
+			for _, file := range existFiles {
+				fmt.Printf("* buffered on %s: %s\n", file.GetBufferedDate(), file.GetFilename())
 			}
 			return nil
 		},

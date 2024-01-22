@@ -4,11 +4,13 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 type FsRepositoryInterface interface {
 	IsExist(path string) bool
 	IsDir(path string) (bool, error)
+	GetModTime(path string) (time.Time, error)
 	IsBrokenSymlink(path string) (bool, error)
 	CreateDir(path string) error
 	HomeDir() (string, error)
@@ -32,6 +34,14 @@ func (repo *FsRepository) IsDir(path string) (bool, error) {
 		return false, err
 	}
 	return f.IsDir(), nil
+}
+
+func (repo *FsRepository) GetModTime(path string) (time.Time, error) {
+	f, err := os.Stat(path)
+	if err != nil {
+		return time.Now(), err
+	}
+	return f.ModTime(), nil
 }
 
 func (repo *FsRepository) IsBrokenSymlink(path string) (bool, error) {

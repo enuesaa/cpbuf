@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+	"time"
 )
 
 type FsMockRepository struct {
@@ -37,6 +38,10 @@ func (repo *FsMockRepository) IsDir(path string) (bool, error) {
 	}
 
 	return false, fmt.Errorf("file or dir does not exist.")
+}
+
+func (repo *FsMockRepository) GetModTime(path string) (time.Time, error) {
+	return time.Now(), nil
 }
 
 func (repo *FsMockRepository) IsBrokenSymlink(path string) (bool, error) {

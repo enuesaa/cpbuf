@@ -7,6 +7,7 @@ import (
 	"github.com/enuesaa/cpbuf/pkg/repository"
 )
 
+//TODO: refactor
 func NewBufferfile(repos repository.Repos, path string, bufferDir string, workDir string) Bufferfile {
 	return Bufferfile{
 		repos:     repos,
@@ -51,4 +52,12 @@ func (f *Bufferfile) IsSameFileExistInWorkDir() (bool, error) {
 
 func (f *Bufferfile) GetWorkPath() (string, error) {
 	return filepath.Join(f.workDir, f.GetFilename()), nil
+}
+
+func (f *Bufferfile) GetBufferedDate() string {
+	modtime, err := f.repos.Fs.GetModTime(f.GetBufferPath())
+	if err != nil {
+		return ""
+	}
+	return modtime.Format("2006/01/02")
 }
