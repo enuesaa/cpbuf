@@ -14,15 +14,15 @@ func TestIsBrokenSymlink(t *testing.T) {
 		expect bool
 	}{
 		{
-			path:  "../../testdata/symlink/link.txt",
+			path:   "../../testdata/symlink/link.txt",
 			expect: false,
 		},
 		{
-			path:  "../../testdata/symlink/source.txt",
+			path:   "../../testdata/symlink/source.txt",
 			expect: false,
 		},
 		{
-			path:  "../../testdata/symlink-broken/link.txt",
+			path:   "../../testdata/symlink-broken/link.txt",
 			expect: true,
 		},
 	}

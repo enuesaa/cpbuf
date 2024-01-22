@@ -12,4 +12,3 @@ func CreateLCmd(repos repository.Repos) *cobra.Command {
 
 	return copyCmd
 }
-

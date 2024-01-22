@@ -21,7 +21,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				selected := usecase.SelectFileWithPrompt(repos)
 				args = []string{selected}
 			}
-	
+
 			if err := usecase.CreateBufDir(repos); err != nil {
 				return fmt.Errorf("failed to create buf dir.\n%s\n", err.Error())
 			}

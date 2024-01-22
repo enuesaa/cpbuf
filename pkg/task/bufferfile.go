@@ -7,7 +7,7 @@ import (
 	"github.com/enuesaa/cpbuf/pkg/repository"
 )
 
-//TODO: refactor
+// TODO: refactor
 func NewBufferfile(repos repository.Repos, path string, bufferDir string, workDir string) Bufferfile {
 	return Bufferfile{
 		repos:     repos,
