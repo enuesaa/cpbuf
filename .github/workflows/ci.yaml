@@ -14,4 +14,7 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: '1.21'
-      - run: go test ./...
+      # see https://blog.utgw.net/entry/2023/06/16/162330
+      - run: go install github.com/mfridman/tparse
+      - run: go test ./... -json > testresult.out
+      - run: tparse -all -file=testresult.out -format markdown >> $GITHUB_STEP_SUMMARY
