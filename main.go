@@ -53,6 +53,6 @@ Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
 `)
 
 	if err := app.Execute(); err != nil {
-		log.Panicf("Error: %s", err.Error())
+		log.Fatalf("Error: %s", err.Error())
 	}
 }
