@@ -85,10 +85,11 @@ func (srv *Registry) GetWorkfileWithFilename(filename string) (Workfile, error) 
 	if err != nil {
 		return Workfile{}, err
 	}
+	workfile := NewWorkfile(srv.repos, filename, bufDir, workDir)
 	if !srv.repos.Fs.IsExist(filepath.Join(workDir, filename)) {
-		return Workfile{}, fmt.Errorf("file %s not found", filename)
+		return workfile, fmt.Errorf("file %s not found", filename)
 	}
-	return NewWorkfile(srv.repos, filename, bufDir, workDir), nil
+	return workfile, nil
 }
 
 func (srv *Registry) ListFilesInWorkDir() ([]Workfile, error) {

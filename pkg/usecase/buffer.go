@@ -30,13 +30,15 @@ func BufferFile(repos repository.Repos, filename string) error {
 	registry := task.NewRegistry(repos)
 	file, err := registry.GetWorkfileWithFilename(filename)
 	if err != nil {
+		// // TODO refactor
+		// if isBrokenSymlink, e := file.IsBrokenSymlink(); e != nil || !isBrokenSymlink {
+		// 	return err
+		// }
+		// fmt.Printf("WARNING: %s was ignored because this file seems to be a broken symlink.\n", file.GetFilename())
 		return err
 	}
 	if err := registry.CopyToBufDir(file); err != nil {
-		if isBrokenSymlink, e := file.IsBrokenSymlink(); e != nil || !isBrokenSymlink {
-			return err
-		}
-		fmt.Printf("WARNING: %s was ignored because this file seems to be a broken symlink.\n", file.GetFilename())
+		return err
 	}
 	fmt.Printf("copied: %s\n", file.GetFilename())
 	return nil
