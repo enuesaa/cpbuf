@@ -26,7 +26,7 @@ func SelectFileWithPrompt(repos repository.Repos) string {
 	return filename
 }
 
-func BufferFile(repos repository.Repos, filename string) error {
+func Buffer(repos repository.Repos, filename string) error {
 	registry := task.NewRegistry(repos)
 	file := registry.GetWorkfile(filename)
 	if err := file.CheckExist(); err != nil {
@@ -51,7 +51,7 @@ func BufferAll(repos repository.Repos) error {
 		return err
 	}
 	for _, file := range files {
-		if err := BufferFile(repos, file.GetFilename()); err != nil {
+		if err := Buffer(repos, file.GetFilename()); err != nil {
 			return err
 		}
 	}

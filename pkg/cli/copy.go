@@ -37,7 +37,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 					}
 					continue
 				}
-				if err := usecase.BufferFile(repos, filename); err != nil {
+				if err := usecase.Buffer(repos, filename); err != nil {
 					return fmt.Errorf("failed to copy files to buf dir.\n%s\n", err.Error())
 				}
 			}
