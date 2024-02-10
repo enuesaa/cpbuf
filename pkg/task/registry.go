@@ -92,6 +92,15 @@ func (srv *Registry) GetWorkfileWithFilename(filename string) (Workfile, error) 
 	return workfile, nil
 }
 
+func (srv *Registry) IsBrokenSymlink(filename string) (bool, error) {
+	workDir, err := srv.repos.Fs.WorkDir()
+	if err != nil {
+		return false, err
+	}
+	path := filepath.Join(workDir, filename)
+	return srv.repos.Fs.IsBrokenSymlink(path)
+}
+
 func (srv *Registry) ListFilesInWorkDir() ([]Workfile, error) {
 	workDir, err := srv.repos.Fs.WorkDir()
 	if err != nil {
