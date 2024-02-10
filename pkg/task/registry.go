@@ -75,6 +75,19 @@ func (srv *Registry) ListFilesInBufDir() ([]Bufferfile, error) {
 	return list, nil
 }
 
+func (srv *Registry) GetWorkfile(filename string) Workfile {
+	workDir, err := srv.repos.Fs.WorkDir()
+	if err != nil {
+		return Workfile{}
+	}
+	bufDir, err := srv.GetBufDirPath()
+	if err != nil {
+		return Workfile{}
+	}
+	workfile := NewWorkfile(srv.repos, filename, bufDir, workDir)
+	return workfile
+}
+
 func (srv *Registry) ListFilesInWorkDir() ([]Workfile, error) {
 	workDir, err := srv.repos.Fs.WorkDir()
 	if err != nil {

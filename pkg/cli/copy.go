@@ -31,6 +31,12 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				return fmt.Errorf("failed to list files in buf dir.\n")
 			}
 			for _, filename := range args {
+				if filename == "." {
+					if err := usecase.BufferAll(repos); err != nil {
+						return fmt.Errorf("failed to copy files to buf dir.\n%s\n", err.Error())
+					}
+					continue
+				}
 				if err := usecase.Buffer(repos, filename); err != nil {
 					return fmt.Errorf("failed to copy files to buf dir.\n%s\n", err.Error())
 				}

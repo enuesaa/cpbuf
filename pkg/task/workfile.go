@@ -1,6 +1,7 @@
 package task
 
 import (
+	"fmt"
 	"path/filepath"
 	"strings"
 
@@ -48,6 +49,17 @@ func (f *Workfile) GetBufferPath() string {
 
 func (f *Workfile) GetWorkPath() (string, error) {
 	return filepath.Join(f.workDir, f.GetFilename()), nil
+}
+
+func (f *Workfile) CheckExist() error {
+	path, err := f.GetWorkPath()
+	if err != nil {
+		return err
+	}
+	if !f.repos.Fs.IsExist(path) {
+		return fmt.Errorf("file %s not found", f.GetFilename())
+	}
+	return nil
 }
 
 func (f *Workfile) IsBrokenSymlink() (bool, error) {

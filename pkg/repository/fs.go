@@ -78,6 +78,10 @@ func (repo *FsRepository) Remove(path string) error {
 }
 
 func (repo *FsRepository) CopyFile(srcPath string, dstPath string) error {
+	if err := repo.CreateDir(filepath.Dir(dstPath)); err != nil {
+		return err
+	}
+
 	srcF, err := os.Open(srcPath)
 	if err != nil {
 		return err
