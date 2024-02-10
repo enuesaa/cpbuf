@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/c-bata/go-prompt"
 	"github.com/enuesaa/cpbuf/pkg/repository"
@@ -26,7 +27,7 @@ func SelectFileWithPrompt(repos repository.Repos) string {
 	return filename
 }
 
-func Buffer(repos repository.Repos, filename string) error {
+func BufferFile(repos repository.Repos, filename string) error {
 	registry := task.NewRegistry(repos)
 	file := registry.GetWorkfile(filename)
 	if err := file.CheckExist(); err != nil {
@@ -44,15 +45,17 @@ func Buffer(repos repository.Repos, filename string) error {
 	return nil
 }
 
-func BufferAll(repos repository.Repos) error {
+func Buffer(repos repository.Repos, filename string) error {
 	registry := task.NewRegistry(repos)
 	files, err := registry.ListFilesInWorkDir()
 	if err != nil {
 		return err
 	}
 	for _, file := range files {
-		if err := Buffer(repos, file.GetFilename()); err != nil {
-			return err
+		if strings.HasPrefix(file.GetFilename(), filename) || filename == "." {
+			if err := BufferFile(repos, file.GetFilename()); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
