@@ -28,18 +28,15 @@ func SelectFileWithPrompt(repos repository.Repos) string {
 
 func BufferFile(repos repository.Repos, filename string) error {
 	registry := task.NewRegistry(repos)
-	isBrokenSymlink, err := registry.IsBrokenSymlink(filename)
-	if err != nil {
+	file := registry.GetWorkfile(filename)
+	if err := file.CheckExist(); err != nil {
+		if is, e := file.IsBrokenSymlink(); is && e == nil {
+			fmt.Printf("WARNING: %s was ignored because this file seems to be a broken symlink.\n", filename)
+			return nil
+		}
 		return err
 	}
-	if isBrokenSymlink {
-		fmt.Printf("WARNING: %s was ignored because this file seems to be a broken symlink.\n", filename)
-		return nil
-	}
-	file, err := registry.GetWorkfileWithFilename(filename)
-	if err != nil {
-		return err
-	}
+
 	if err := registry.CopyToBufDir(file); err != nil {
 		return err
 	}

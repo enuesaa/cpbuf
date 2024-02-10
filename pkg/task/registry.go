@@ -1,7 +1,6 @@
 package task
 
 import (
-	"fmt"
 	"path/filepath"
 	"slices"
 
@@ -76,29 +75,17 @@ func (srv *Registry) ListFilesInBufDir() ([]Bufferfile, error) {
 	return list, nil
 }
 
-func (srv *Registry) GetWorkfileWithFilename(filename string) (Workfile, error) {
+func (srv *Registry) GetWorkfile(filename string) Workfile {
 	workDir, err := srv.repos.Fs.WorkDir()
 	if err != nil {
-		return Workfile{}, err
+		return Workfile{}
 	}
 	bufDir, err := srv.GetBufDirPath()
 	if err != nil {
-		return Workfile{}, err
+		return Workfile{}
 	}
 	workfile := NewWorkfile(srv.repos, filename, bufDir, workDir)
-	if !srv.repos.Fs.IsExist(filepath.Join(workDir, filename)) {
-		return workfile, fmt.Errorf("file %s not found", filename)
-	}
-	return workfile, nil
-}
-
-func (srv *Registry) IsBrokenSymlink(filename string) (bool, error) {
-	workDir, err := srv.repos.Fs.WorkDir()
-	if err != nil {
-		return false, err
-	}
-	path := filepath.Join(workDir, filename)
-	return srv.repos.Fs.IsBrokenSymlink(path)
+	return workfile
 }
 
 func (srv *Registry) ListFilesInWorkDir() ([]Workfile, error) {
