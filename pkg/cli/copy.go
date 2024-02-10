@@ -42,6 +42,9 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				}
 			}
 
+			if len(existFiles) == 0 {
+				return nil
+			}
 			fmt.Printf("\n")
 			fmt.Printf("WARNING: These files already buffered.\n")
 			for _, file := range existFiles {
