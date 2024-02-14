@@ -1,6 +1,6 @@
 module github.com/enuesaa/cpbuf
 
-go 1.21
+go 1.22.0
 
 require (
 	github.com/c-bata/go-prompt v0.2.6
