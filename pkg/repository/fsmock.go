@@ -64,7 +64,7 @@ func (repo *FsMockRepository) CreateDir(path string) error {
 func (repo *FsMockRepository) Remove(path string) error {
 	list := make([]string, 0)
 	for _, file := range repo.Files {
-		if file != path {
+		if !strings.HasPrefix(file, path) {
 			list = append(list, file)
 		}
 	}
