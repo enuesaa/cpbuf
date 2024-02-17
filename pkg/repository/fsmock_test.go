@@ -85,3 +85,12 @@ func TestListFiles(t *testing.T) {
 		assert.Equal(t, tt.expect, actual)
 	}
 }
+
+func TestCopyFile(t *testing.T) {
+	files := []string{"/aaa", "/aaa/a.txt", "/bbb"}
+	fsmock := FsMockRepository{
+		Files: files,
+	}
+	assert.Nil(t, fsmock.CopyFile("/aaa/a.txt", "/bbb/b.txt"))
+	assert.Equal(t, fsmock.Files, []string{"/aaa", "/aaa/a.txt", "/bbb", "/bbb/b.txt"})
+}

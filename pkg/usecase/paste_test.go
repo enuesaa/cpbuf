@@ -20,8 +20,28 @@ func TestListConflictedFilenames(t *testing.T) {
 			"/workdir/f",
 		},
 	}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 
 	actual, _ := ListConflictedFilenames(repos)
 	assert.Equal(t, []string{"a", "d"}, actual)
+}
+
+func TestPaste(t *testing.T) {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/.cpbuf/b",
+			"/.cpbuf/c",
+			"/workdir/a",
+		},
+	}
+	repos := repository.NewMockRepos(&fsmock)
+
+	assert.Nil(t, Paste(repos))
+	assert.Equal(t, fsmock.Files, []string{
+		"/.cpbuf/b",
+		"/.cpbuf/c",
+		"/workdir/a",
+		"/workdir/b",
+		"/workdir/c",
+	})
 }

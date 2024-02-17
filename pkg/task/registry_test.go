@@ -9,7 +9,7 @@ import (
 
 func TestGetBufDirPath(t *testing.T) {
 	fsmock := repository.FsMockRepository{Files: []string{}}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 	registry := NewRegistry(repos)
 	actual, _ := registry.GetBufDirPath()
 	assert.Equal(t, "/.cpbuf", actual)
@@ -17,14 +17,14 @@ func TestGetBufDirPath(t *testing.T) {
 
 func TestIsBufDirExist(t *testing.T) {
 	fsmock := repository.FsMockRepository{Files: []string{"/.cpbuf"}}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 	registry := NewRegistry(repos)
 	assert.Equal(t, true, registry.IsBufDirExist())
 }
 
 func TestCreateBufDir(t *testing.T) {
 	fsmock := repository.FsMockRepository{Files: []string{}}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 
 	registry := NewRegistry(repos)
 	registry.CreateBufDir()
@@ -33,7 +33,7 @@ func TestCreateBufDir(t *testing.T) {
 
 func TestDeleteBufDir(t *testing.T) {
 	fsmock := repository.FsMockRepository{Files: []string{"/.cpbuf"}}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 
 	registry := NewRegistry(repos)
 	registry.DeleteBufDir()
@@ -48,7 +48,7 @@ func TestListFilesInBufDir(t *testing.T) {
 			"/.cpbuf/c",
 		},
 	}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 
 	registry := NewRegistry(repos)
 	buffiles, _ := registry.ListFilesInBufDir()
@@ -67,7 +67,7 @@ func TestListFilesInWorkDir(t *testing.T) {
 			"/workdir/c",
 		},
 	}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 
 	registry := NewRegistry(repos)
 	workfiles, _ := registry.ListFilesInWorkDir()
@@ -88,7 +88,7 @@ func TestCopyToBufDir(t *testing.T) {
 			"/workdir/c",
 		},
 	}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 
 	registry := NewRegistry(repos)
 	registry.CopyToBufDir(NewWorkfile(repos, "/workdir/a", "/.cpbuf", "/workdir"))
@@ -108,7 +108,7 @@ func TestCopyToWorkDir(t *testing.T) {
 			"/.cpbuf/c",
 		},
 	}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 
 	registry := NewRegistry(repos)
 	registry.CopyToWorkDir(NewBufferfile(repos, "/.cpbuf/a", "/.cpbuf", "/workdir"))
@@ -128,7 +128,7 @@ func TestListFilesRecursively(t *testing.T) {
 			"/workdir/c",
 		},
 	}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 
 	registry := NewRegistry(repos)
 	actual, _ := registry.ListFilesRecursively("/.cpbuf")
@@ -143,7 +143,7 @@ func TestRemoveFileInWorkDir(t *testing.T) {
 			"/workdir/c",
 		},
 	}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 
 	registry := NewRegistry(repos)
 	registry.RemoveFileInWorkDir("a")
@@ -163,7 +163,7 @@ func TestRemoveFileInBufDir(t *testing.T) {
 			"/.cpbuf/c",
 		},
 	}
-	repos := repository.NewMockRepos(fsmock)
+	repos := repository.NewMockRepos(&fsmock)
 
 	registry := NewRegistry(repos)
 	registry.RemoveFileInBufDir("a")
