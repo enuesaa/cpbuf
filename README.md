@@ -3,6 +3,9 @@ A CLI tool to copy and paste files.
 
 While `cp` would copy and paste in one-time operation, `cpbuf` is stateful.
 
+[![ci](https://github.com/enuesaa/cpbuf/actions/workflows/ci.yaml/badge.svg)](https://github.com/enuesaa/cpbuf/actions/workflows/ci.yaml)
+
+
 ## Install
 ```bash
 git clone https://github.com/enuesaa/cpbuf.git --depth 1
