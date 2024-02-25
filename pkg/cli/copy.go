@@ -10,8 +10,8 @@ import (
 
 func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "copy <filename>",
-		Short: "Copy file to buf dir (alias: c)",
+		Use:     "copy <filename>",
+		Short:   "Copy file to buf dir (alias: c)",
 		Aliases: []string{"c"},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			interactive, _ := cmd.Flags().GetBool("interactive")

@@ -10,8 +10,8 @@ import (
 
 func CreateListCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list",
-		Short: "List files in buf dir (alias: l)",
+		Use:     "list",
+		Short:   "List files in buf dir (alias: l)",
 		Aliases: []string{"l"},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if !usecase.IsBufDirExist(repos) {
