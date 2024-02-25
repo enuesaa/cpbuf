@@ -4,17 +4,18 @@ import (
 	"github.com/enuesaa/cpbuf/pkg/repository"
 )
 
-func ExampleCreateCopyCmd() {
+func ExampleCreatePasteCmd() {
 	fsmock := repository.FsMockRepository{
 		Files: []string{
-			"/workdir/a.txt",
+			"/.cpbuf",
+			"/.cpbuf/a.txt",
+			"/workdir/b.txt",
 		},
 	}
 	repos := repository.NewMockRepos(&fsmock)
 
-	copyCmd := CreateCopyCmd(repos)
-	copyCmd.SetArgs([]string{"a.txt"})
-	copyCmd.Execute()
+	pasteCmd := CreatePasteCmd(repos)
+	pasteCmd.Execute()
 	// Output:
-	// copied: a.txt
+	// pasted: a.txt
 }
