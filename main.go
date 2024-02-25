@@ -21,13 +21,9 @@ func main() {
 
 	repos := repository.NewRepos()
 	app.AddCommand(cli.CreateCopyCmd(repos))
-	app.AddCommand(cli.CreateCCmd(repos))
 	app.AddCommand(cli.CreatePasteCmd(repos))
-	app.AddCommand(cli.CreatePCmd(repos))
 	app.AddCommand(cli.CreateResetCmd(repos))
-	app.AddCommand(cli.CreateRCmd(repos))
 	app.AddCommand(cli.CreateListCmd(repos))
-	app.AddCommand(cli.CreateLCmd(repos))
 
 	// disable default
 	app.SetHelpCommand(&cobra.Command{Hidden: true})

@@ -11,7 +11,8 @@ import (
 func CreateResetCmd(repos repository.Repos) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "reset",
-		Short: "Clear buffered files",
+		Short: "Clear buffered files (alias: r)",
+		Aliases: []string{"r"},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := usecase.DeleteBufDir(repos); err != nil {
 				return fmt.Errorf("failed to clear buf dir.\n%s\n", err.Error())
