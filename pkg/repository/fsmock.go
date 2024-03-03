@@ -12,6 +12,7 @@ type FsMockRepository struct {
 }
 
 func (repo *FsMockRepository) IsExist(path string) bool {
+	// TODO: parse path and check it.
 	return slices.Contains(repo.Files, path)
 }
 

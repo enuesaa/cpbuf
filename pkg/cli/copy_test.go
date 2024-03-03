@@ -18,3 +18,22 @@ func ExampleCreateCopyCmd() {
 	// Output:
 	// copied: a.txt
 }
+
+func ExampleCreateCopyCmd_multipleFiles() {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/workdir/a.txt",
+			"/workdir/b.txt",
+			"/workdir/c.txt",
+		},
+	}
+	repos := repository.NewMockRepos(&fsmock)
+
+	copyCmd := CreateCopyCmd(repos)
+	copyCmd.SetArgs([]string{"."})
+	copyCmd.Execute()
+	// Output:
+	// copied: a.txt
+	// copied: b.txt
+	// copied: c.txt
+}
