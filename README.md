@@ -29,3 +29,15 @@ Flags:
       --help      Show help information
       --version   Show version
 ```
+
+### Copy files
+```bash
+cpbuf copy a.txt
+```
+
+After executing this command, the buf dir `~/.cpbuf` would be created.
+
+### Paste files
+```bash
+cpbuf paste
+```
