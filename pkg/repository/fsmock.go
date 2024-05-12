@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"slices"
 	"strings"
 	"time"
@@ -21,25 +20,15 @@ func (repo *FsMockRepository) IsDir(path string) (bool, error) {
 	if !strings.HasPrefix(path, "/") {
 		path = "/workdir/" + path
 	}
-	result := new(bool)
 	for _, filepath := range repo.Files {
 		if strings.HasPrefix(filepath, path) {
 			if filepath == path {
-				// this is file. not dir.
-				if *result != true {
-					*result = false
-				}
 				continue
 			}
-			*result = true
-			continue
+			return true, nil
 		}
 	}
-	if result != nil {
-		return *result, nil
-	}
-
-	return false, fmt.Errorf("file or dir does not exist.")
+	return false, nil
 }
 
 func (repo *FsMockRepository) GetModTime(path string) (time.Time, error) {
