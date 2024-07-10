@@ -111,8 +111,18 @@ func TestCopyToWorkDir(t *testing.T) {
 	repos := repository.NewMock(&fsmock)
 
 	registry := NewRegistry(repos)
-	registry.CopyToWorkDir(NewBufferfile(repos, "/.cpbuf/a", "/.cpbuf", "/workdir"))
-	registry.CopyToWorkDir(NewBufferfile(repos, "/.cpbuf/b", "/.cpbuf", "/workdir"))
+	registry.CopyToWorkDir(Buffile{
+		repos: repos,
+		path: "/.cpbuf/a",
+		bufferDir: "/.cpbuf",
+		workDir: "/workdir",
+	})
+	registry.CopyToWorkDir(Buffile{
+		repos: repos,
+		path: "/.cpbuf/b",
+		bufferDir: "/.cpbuf",
+		workDir: "/workdir",
+	})
 
 	actual, _ := registry.ListFilesRecursively("/workdir")
 	assert.Equal(t, []string{"/workdir/a", "/workdir/b"}, actual)

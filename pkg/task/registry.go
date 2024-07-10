@@ -55,22 +55,27 @@ func (srv *Registry) DeleteBufDir() error {
 	return srv.repos.Fs.Remove(path)
 }
 
-func (srv *Registry) ListFilesInBufDir() ([]Bufferfile, error) {
+func (srv *Registry) ListFilesInBufDir() ([]Buffile, error) {
 	bufDir, err := srv.GetBufDirPath()
 	if err != nil {
-		return make([]Bufferfile, 0), err
+		return make([]Buffile, 0), err
 	}
 	files, err := srv.ListFilesRecursively(bufDir)
 	if err != nil {
-		return make([]Bufferfile, 0), err
+		return make([]Buffile, 0), err
 	}
 	workDir, err := srv.repos.Fs.WorkDir()
 	if err != nil {
-		return make([]Bufferfile, 0), err
+		return make([]Buffile, 0), err
 	}
-	list := make([]Bufferfile, 0)
+	list := make([]Buffile, 0)
 	for _, file := range files {
-		list = append(list, NewBufferfile(srv.repos, file, bufDir, workDir))
+		list = append(list, Buffile{
+			repos: srv.repos,
+			path: file,
+			bufferDir: bufDir,
+			workDir: workDir,
+		})
 	}
 	return list, nil
 }
@@ -128,12 +133,12 @@ func (srv *Registry) CopyToBufDir(workfile Workfile) error {
 	return srv.repos.Fs.CopyFile(workPath, bufferPath)
 }
 
-func (srv *Registry) CopyToWorkDir(bufferfile Bufferfile) error {
-	workPath, err := bufferfile.GetWorkPath()
+func (srv *Registry) CopyToWorkDir(buffile Buffile) error {
+	workPath, err := buffile.GetWorkPath()
 	if err != nil {
 		return err
 	}
-	isDir, err := bufferfile.IsDir()
+	isDir, err := buffile.IsDir()
 	if err != nil {
 		return err
 	}
@@ -143,7 +148,7 @@ func (srv *Registry) CopyToWorkDir(bufferfile Bufferfile) error {
 		}
 		return nil
 	}
-	bufferPath := bufferfile.GetBufferPath()
+	bufferPath := buffile.GetBufferPath()
 	return srv.repos.Fs.CopyFile(bufferPath, workPath)
 }
 
