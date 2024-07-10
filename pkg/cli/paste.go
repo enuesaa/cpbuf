@@ -24,13 +24,13 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 
 			conflictedFilenames, err := usecase.ListConflictedFilenames(repos)
 			if err != nil {
-				return fmt.Errorf("failed to list files in current dir.\n%s\n", err.Error())
+				return fmt.Errorf("failed to list files in current dir.\n%s", err.Error())
 			}
 			if len(conflictedFilenames) > 0 {
 				if overwrite {
 					for _, filename := range conflictedFilenames {
 						if err := usecase.RemoveFileInWorkDir(repos, filename); err != nil {
-							return fmt.Errorf("failed to remove a file in work dir.\n%s\n", err.Error())
+							return fmt.Errorf("failed to remove a file in work dir.\n%s", err.Error())
 						}
 						fmt.Printf("removed: %s\n", filename)
 					}
@@ -48,14 +48,14 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 
 			filenames, err := usecase.ListFilesInBufDir(repos)
 			if err != nil {
-				return fmt.Errorf("failed to list files in buf dir.\n%s\n", err.Error())
+				return fmt.Errorf("failed to list files in buf dir.\n%s", err.Error())
 			}
 			if len(filenames) == 0 {
 				fmt.Printf("No files were found.\n")
 				// to delete buf dir, do not return here.
 			} else {
 				if err := usecase.Paste(repos); err != nil {
-					return fmt.Errorf("failed to paste file.\n%s\n", err.Error())
+					return fmt.Errorf("failed to paste file.\n%s", err.Error())
 				}
 			}
 
@@ -64,7 +64,7 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 			}
 
 			if err := usecase.DeleteBufDir(repos); err != nil {
-				return fmt.Errorf("failed to clear buf dir.\n%s\n", err.Error())
+				return fmt.Errorf("failed to clear buf dir.\n%s", err.Error())
 			}
 			return nil
 		},

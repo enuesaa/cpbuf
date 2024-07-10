@@ -15,7 +15,7 @@ func CreateResetCmd(repos repository.Repos) *cobra.Command {
 		Aliases: []string{"r"},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := usecase.DeleteBufDir(repos); err != nil {
-				return fmt.Errorf("failed to clear buf dir.\n%s\n", err.Error())
+				return fmt.Errorf("failed to clear buf dir.\n%s", err.Error())
 			}
 			return nil
 		},

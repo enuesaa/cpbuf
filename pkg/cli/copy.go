@@ -16,7 +16,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			interactive, _ := cmd.Flags().GetBool("interactive")
 			if !interactive && len(args) == 0 {
-				return fmt.Errorf("please pass filename to copy.\n")
+				return fmt.Errorf("please pass filename to copy")
 			}
 			if interactive {
 				selected := usecase.SelectFileWithPrompt(repos)
@@ -24,16 +24,16 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 			}
 
 			if err := usecase.CreateBufDir(repos); err != nil {
-				return fmt.Errorf("failed to create buf dir.\n%s\n", err.Error())
+				return fmt.Errorf("failed to create buf dir.\n%s", err.Error())
 			}
 
 			existFiles, err := usecase.ListFilesInBufDir(repos)
 			if err != nil {
-				return fmt.Errorf("failed to list files in buf dir.\n")
+				return fmt.Errorf("failed to list files in buf dir")
 			}
 			for _, filename := range args {
 				if err := usecase.Buffer(repos, filename); err != nil {
-					return fmt.Errorf("failed to copy files to buf dir.\n%s\n", err.Error())
+					return fmt.Errorf("failed to copy files to buf dir.\n%s", err.Error())
 				}
 			}
 
