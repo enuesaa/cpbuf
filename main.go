@@ -19,7 +19,7 @@ func main() {
 		Version: "0.0.15",
 	}
 
-	repos := repository.NewRepos()
+	repos := repository.New()
 	app.AddCommand(cli.CreateCopyCmd(repos))
 	app.AddCommand(cli.CreatePasteCmd(repos))
 	app.AddCommand(cli.CreateResetCmd(repos))

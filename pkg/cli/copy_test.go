@@ -10,7 +10,7 @@ func ExampleCreateCopyCmd() {
 			"/workdir/a.txt",
 		},
 	}
-	repos := repository.NewMockRepos(&fsmock)
+	repos := repository.NewMock(&fsmock)
 
 	copyCmd := CreateCopyCmd(repos)
 	copyCmd.SetArgs([]string{"a.txt"})
@@ -27,7 +27,7 @@ func ExampleCreateCopyCmd_multipleFiles() {
 			"/workdir/c.txt",
 		},
 	}
-	repos := repository.NewMockRepos(&fsmock)
+	repos := repository.NewMock(&fsmock)
 
 	copyCmd := CreateCopyCmd(repos)
 	copyCmd.SetArgs([]string{"."})

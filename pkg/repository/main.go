@@ -5,14 +5,14 @@ type Repos struct {
 	Prompt PromptRepositoryInterface
 }
 
-func NewRepos() Repos {
+func New() Repos {
 	return Repos{
 		Fs:     &FsRepository{},
 		Prompt: &PromptRepository{},
 	}
 }
 
-func NewMockRepos(fsmock *FsMockRepository) Repos {
+func NewMock(fsmock *FsMockRepository) Repos {
 	return Repos{
 		Fs:     fsmock,
 		Prompt: &PromptRepository{},

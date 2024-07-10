@@ -12,7 +12,7 @@ func ExampleCreatePasteCmd() {
 			"/workdir/b.txt",
 		},
 	}
-	repos := repository.NewMockRepos(&fsmock)
+	repos := repository.NewMock(&fsmock)
 
 	pasteCmd := CreatePasteCmd(repos)
 	pasteCmd.Execute()

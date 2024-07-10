@@ -13,7 +13,7 @@ func TestBufferFile(t *testing.T) {
 			"/workdir/a",
 		},
 	}
-	repos := repository.NewMockRepos(&fsmock)
+	repos := repository.NewMock(&fsmock)
 
 	assert.Nil(t, Buffer(repos, "a"))
 	assert.Equal(t, fsmock.Files, []string{
@@ -30,7 +30,7 @@ func TestBuffer(t *testing.T) {
 			"/workdir/a/c",
 		},
 	}
-	repos := repository.NewMockRepos(&fsmock)
+	repos := repository.NewMock(&fsmock)
 
 	assert.Nil(t, Buffer(repos, "a"))
 	assert.Equal(t, fsmock.Files, []string{

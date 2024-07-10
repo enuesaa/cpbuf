@@ -13,7 +13,7 @@ func ExampleCreateListCmd() {
 			"/.cpbuf/c.txt",
 		},
 	}
-	repos := repository.NewMockRepos(&fsmock)
+	repos := repository.NewMock(&fsmock)
 
 	listCmd := CreateListCmd(repos)
 	listCmd.Execute()
