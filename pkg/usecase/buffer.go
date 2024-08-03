@@ -72,6 +72,9 @@ func isSearchingFile(filename string, searching string) bool {
 	if searching == "." || searching == "*" {
 		return true
 	}
+	if strings.Contains(filename, "/") {
+		return strings.HasPrefix(filename, searching)
+	}
 	if strings.Contains(searching, "*") {
 		filenameSplit := strings.Split(filename, "") // like a.txt
 		searchingSplit := strings.Split(strings.ReplaceAll(searching, "*", ""), "") // like a* or *txt
