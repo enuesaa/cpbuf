@@ -31,8 +31,8 @@ func main() {
 	app.SilenceErrors = true
 	app.SilenceUsage = true
 	app.PersistentFlags().SortFlags = false
-	app.PersistentFlags().BoolP("help", "", false, "Show help information")
-	app.PersistentFlags().BoolP("version", "", false, "Show version")
+	app.PersistentFlags().BoolP("help", "h", false, "Show help information")
+	app.PersistentFlags().BoolP("version", "v", false, "Show version")
 	app.SetHelpTemplate(`{{.Short}}
 {{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if eq (len .Groups) 0}}
 Available Commands:{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
