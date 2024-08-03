@@ -27,7 +27,7 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				return fmt.Errorf("failed to create buf dir.\n%s", err.Error())
 			}
 
-			existFiles, err := usecase.ListFilesInBufDir(repos)
+			existingFiles, err := usecase.ListFilesInBufDir(repos)
 			if err != nil {
 				return fmt.Errorf("failed to list files in buf dir")
 			}
@@ -37,12 +37,12 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				}
 			}
 
-			if len(existFiles) == 0 {
+			if len(existingFiles) == 0 {
 				return nil
 			}
 			fmt.Printf("\n")
 			fmt.Printf("WARNING: These files already buffered.\n")
-			for _, file := range existFiles {
+			for _, file := range existingFiles {
 				fmt.Printf("* buffered on %s: %s\n", file.GetBufferedDate(), file.GetFilename())
 			}
 			return nil
