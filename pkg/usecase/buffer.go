@@ -45,6 +45,13 @@ func BufferFile(repos repository.Repos, filename string) error {
 	return nil
 }
 
+// Copy a file to buf dir.
+//
+// filename accepts multiple format below.
+// - aa.txt: copy aa.txt
+// - .     : copy all files in current dir
+// - *     : copy all files in current dir
+// - *a.txt: copy all files which ends with a.txt in current dir
 func Buffer(repos repository.Repos, filename string) error {
 	registry := task.NewRegistry(repos)
 	files, err := registry.ListFilesInWorkDir()
@@ -52,11 +59,33 @@ func Buffer(repos repository.Repos, filename string) error {
 		return err
 	}
 	for _, file := range files {
-		if strings.HasPrefix(file.GetFilename(), filename) || filename == "." {
+		if isSearchingFile(file.GetFilename(), filename) {
 			if err := BufferFile(repos, file.GetFilename()); err != nil {
 				return err
-			}
+			}	
 		}
 	}
 	return nil
+}
+
+func isSearchingFile(filename string, searching string) bool {
+	if searching == "." || searching == "*" {
+		return true
+	}
+	if strings.Contains(searching, "*") {
+		filenameSplit := strings.Split(filename, "") // like a.txt
+		searchingSplit := strings.Split(strings.ReplaceAll(searching, "*", ""), "") // like a* or *txt
+		for _, char := range filenameSplit {
+			if searchingSplit[0] == char {
+				if len(searchingSplit) > 1 {
+					searchingSplit = searchingSplit[1:]
+				} else {
+					return true
+				}
+			}
+		}
+		return len(searchingSplit) == 0
+	}
+
+	return filename == searching
 }
