@@ -37,3 +37,26 @@ func ExampleCreateCopyCmd_multipleFiles() {
 	// copied: b.txt
 	// copied: c.txt
 }
+
+func ExampleCreateCopyCmd_useWildCard() {
+	fsmock := repository.FsMockRepository{
+		Files: []string{
+			"/workdir/a.txt",
+			"/workdir/ab.txt",
+			"/workdir/abc.txt",
+			"/workdir/abcd.txt",
+			"/workdir/bc.txt",
+			"/workdir/ab/aa.txt",
+			"/workdir/abc/aa.txt",
+		},
+	}
+	repos := repository.NewMock(&fsmock)
+
+	copyCmd := CreateCopyCmd(repos)
+	copyCmd.SetArgs([]string{"ab*"})
+	copyCmd.Execute()
+	// Output:
+	// copied: ab.txt
+	// copied: abc.txt
+	// copied: abcd.txt
+}
