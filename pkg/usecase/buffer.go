@@ -93,12 +93,15 @@ func isSearchingFile(filename string, searching string) bool {
 					continue
 				}
 				if len(searchingSplit) == 1 {
+					if searchingSplit[0] != "*" {
+						return false
+					}
 					continue
 				}
 				if searchingSplit[0] != "*" && char != searchingSplit[1] {
 					return false
 				}
-				if searchingSplit[0] != "*" && char == searchingSplit[1] {
+				if char == searchingSplit[1] {
 					rest := searchingSplit[2:]
 					searchingSplit = []string{searchingSplit[0] + char}
 					searchingSplit = append(searchingSplit, rest...)
