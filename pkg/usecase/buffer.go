@@ -68,26 +68,58 @@ func Buffer(repos repository.Repos, filename string) error {
 	return nil
 }
 
+// TODO: refactor logic
 func isSearchingFile(filename string, searching string) bool {
 	if searching == "." || searching == "*" {
 		return true
 	}
-	if strings.Contains(filename, "/") {
-		return strings.HasPrefix(filename, searching)
+	if strings.Contains(filename, "/") && !strings.Contains(searching, "*") {
+		nested := strings.Split(filename, "/")
+		if len(nested) == 0 {
+			return false
+		}
+		return strings.HasPrefix(searching, nested[0]) && strings.HasPrefix(filename, searching)
 	}
 	if strings.Contains(searching, "*") {
 		filenameSplit := strings.Split(filename, "") // like a.txt
-		searchingSplit := strings.Split(strings.ReplaceAll(searching, "*", ""), "") // like a* or *txt
+		searchingSplit := strings.Split(searching, "") // like a* or *txt
 		for _, char := range filenameSplit {
-			if searchingSplit[0] == char {
-				if len(searchingSplit) > 1 {
+			if strings.HasPrefix(searchingSplit[0], "*") {
+				if char == "/" {
+					if len(searchingSplit) == 1 {
+						return true
+					}
 					searchingSplit = searchingSplit[1:]
-				} else {
+					continue
+				}
+				if len(searchingSplit) == 1 {
+					continue
+				}
+				if searchingSplit[0] != "*" && char != searchingSplit[1] {
+					return false
+				}
+				if searchingSplit[0] != "*" && char == searchingSplit[1] {
+					rest := searchingSplit[2:]
+					searchingSplit = []string{searchingSplit[0] + char}
+					searchingSplit = append(searchingSplit, rest...)
+					continue
+				}
+				rest := searchingSplit[2:]
+				searchingSplit = []string{searchingSplit[0]}
+				searchingSplit = append(searchingSplit, rest...)
+				continue
+			}
+			if searchingSplit[0] == char {
+				if len(searchingSplit) <= 1 {
 					return true
 				}
+				searchingSplit = searchingSplit[1:]
 			}
 		}
-		return len(searchingSplit) == 0
+		if len(searchingSplit) == 0 {
+			return true
+		}
+		return searchingSplit[0] == "*" && len(searchingSplit) == 1
 	}
 
 	return filename == searching

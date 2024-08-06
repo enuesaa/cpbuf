@@ -51,10 +51,16 @@ func TestIsSearchingFile(t *testing.T) {
 	assert.Equal(t, true, isSearchingFile("a.txt", "*.txt"))
 	assert.Equal(t, true, isSearchingFile("a/bb.txt", "a"))
 	assert.Equal(t, true, isSearchingFile("a/bb/cc.txt", "a"))
+	assert.Equal(t, true, isSearchingFile("a/bb/cc.txt", "a*"))
+	assert.Equal(t, true, isSearchingFile("ab/bb/cc.txt", "a*"))
+	assert.Equal(t, true, isSearchingFile("ab/bb/cc.txt", "ab"))
+	assert.Equal(t, true, isSearchingFile("ab/bb/cc.txt", "ab/bb"))
+	assert.Equal(t, true, isSearchingFile("ab/bb/cc.txt", "ab/bb/cc.txt"))
 
 	assert.Equal(t, false, isSearchingFile("a.txt", "b.txt"))
 	assert.Equal(t, false, isSearchingFile("a.txt", ""))
 	assert.Equal(t, false, isSearchingFile("a.txt", "b*"))
 	assert.Equal(t, false, isSearchingFile("a.txt", "a.txta"))
-	assert.Equal(t, false, isSearchingFile("a/bb/cc.txt", "a*"))
+	assert.Equal(t, false, isSearchingFile("ab/bb/cc.txt", "a"))
+	assert.Equal(t, false, isSearchingFile("ab/bb/cc.txt", "*a"))
 }
