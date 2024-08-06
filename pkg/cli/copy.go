@@ -41,9 +41,9 @@ func CreateCopyCmd(repos repository.Repos) *cobra.Command {
 				return nil
 			}
 			fmt.Printf("\n")
-			fmt.Printf("WARNING: These files already buffered.\n")
+			fmt.Printf("WARNING: These files already copied.\n")
 			for _, file := range existingFiles {
-				fmt.Printf("* buffered on %s: %s\n", file.GetBufferedDate(), file.GetFilename())
+				fmt.Printf("* copied on %s: %s\n", file.GetBufferedDate(), file.GetFilename())
 			}
 			return nil
 		},

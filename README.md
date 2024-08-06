@@ -21,7 +21,7 @@ Available Commands:
   copy        Copy file to buf dir (alias: c)
   list        List files in buf dir (alias: l)
   paste       Paste files to current dir (alias: p)
-  reset       Clear buffered files (alias: r)
+  reset       Clear copied files (alias: r)
 
 Flags:
       --help      Show help information
