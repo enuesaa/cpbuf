@@ -46,7 +46,9 @@ func ExampleCreateCopyCmd_useWildCard() {
 			"/workdir/abc.txt",
 			"/workdir/abcd.txt",
 			"/workdir/bc.txt",
+			"/workdir/ab",
 			"/workdir/ab/aa.txt",
+			"/workdir/abc",
 			"/workdir/abc/aa.txt",
 		},
 	}
@@ -56,7 +58,11 @@ func ExampleCreateCopyCmd_useWildCard() {
 	copyCmd.SetArgs([]string{"ab*"})
 	copyCmd.Execute()
 	// Output:
+	// copied: ab
 	// copied: ab.txt
+	// copied: ab/aa.txt
+	// copied: abc
 	// copied: abc.txt
+	// copied: abc/aa.txt
 	// copied: abcd.txt
 }
