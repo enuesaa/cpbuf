@@ -111,20 +111,29 @@ func isTextMatch(text string, pattern string) bool {
 	patternSplit = slices.DeleteFunc(patternSplit, func(v string) bool {
 		return v == ""
 	})
+	lastMatched := -1
 	for _, ps := range patternSplit {
 		index := strings.Index(text, ps)
 		if index == -1 {
 			return false
 		}
-
-		textSplit := strings.Split(text, ps)
-		//TODO
-		if index == 0 {
-			textSplit = append([]string{"*", ps}, textSplit[1:]...)
-		} else {
-			textSplit = append([]string{"*", ps}, textSplit[1:]...)
+		newtext := make([]string, 0)
+		for c, char := range strings.Split(text, "") {
+			if lastMatched == -1 && c < index {
+				newtext = append(newtext, char)
+			} else if c < lastMatched {
+				newtext = append(newtext, char)
+			} else if c < index {
+				//
+			} else if c == index {
+				newtext = append(newtext, "*")
+				newtext = append(newtext, char)
+			} else {
+				newtext = append(newtext, char)
+			}
 		}
-		text = strings.Join(textSplit, "")
+		text = strings.Join(newtext, "")
+		lastMatched = strings.Index(text, ps) + len(ps)
 	}
 	fmt.Printf("%s %s\n", text, pattern)
 

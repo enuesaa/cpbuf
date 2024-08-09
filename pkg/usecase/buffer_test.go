@@ -69,7 +69,7 @@ func TestIsTextMatch(t *testing.T) {
 	assert.Equal(t, true, isTextMatch("a.txt", "a.txt"))
 	assert.Equal(t, true, isTextMatch("a.txt", "*.txt"))
 	assert.Equal(t, true, isTextMatch("a.txt", "a.*xt"))
-	assert.Equal(t, true, isTextMatch("a.txt", "a*t"))
+	assert.Equal(t, true, isTextMatch("a.txt", "a*xt"))
 	assert.Equal(t, true, isTextMatch("a.txt", "a*"))
 
 	assert.Equal(t, false, isTextMatch("ab", "a"))
