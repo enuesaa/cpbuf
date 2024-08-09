@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/c-bata/go-prompt"
@@ -68,62 +69,64 @@ func Buffer(repos repository.Repos, filename string) error {
 	return nil
 }
 
-// TODO: refactor logic
 func isSearchingFile(filename string, searching string) bool {
 	if searching == "." || searching == "*" {
 		return true
 	}
-	if strings.Contains(filename, "/") && !strings.Contains(searching, "*") {
-		nested := strings.Split(filename, "/")
-		if len(nested) == 0 {
-			return false
-		}
-		return strings.HasPrefix(searching, nested[0]) && strings.HasPrefix(filename, searching)
+	dirs := strings.Split(filename, "/")
+	dirs = slices.DeleteFunc(dirs, func(v string) bool {
+		return v == ""
+	})
+	searchingDirs := strings.Split(searching, "/")
+	searchingDirs = slices.DeleteFunc(searchingDirs, func(v string) bool {
+		return v == ""
+	})
+
+	if len(dirs) == 0 {
+		return len(searchingDirs) == 0
 	}
-	if strings.Contains(searching, "*") {
-		filenameSplit := strings.Split(filename, "") // like a.txt
-		searchingSplit := strings.Split(searching, "") // like a* or *txt
-		for _, char := range filenameSplit {
-			if strings.HasPrefix(searchingSplit[0], "*") {
-				if char == "/" {
-					if len(searchingSplit) == 1 {
-						return true
-					}
-					searchingSplit = searchingSplit[1:]
-					continue
-				}
-				if len(searchingSplit) == 1 {
-					if searchingSplit[0] != "*" {
-						return false
-					}
-					continue
-				}
-				if searchingSplit[0] != "*" && char != searchingSplit[1] {
-					return false
-				}
-				if char == searchingSplit[1] {
-					rest := searchingSplit[2:]
-					searchingSplit = []string{searchingSplit[0] + char}
-					searchingSplit = append(searchingSplit, rest...)
-					continue
-				}
-				rest := searchingSplit[2:]
-				searchingSplit = []string{searchingSplit[0]}
-				searchingSplit = append(searchingSplit, rest...)
-				continue
-			}
-			if searchingSplit[0] == char {
-				if len(searchingSplit) <= 1 {
-					return true
-				}
-				searchingSplit = searchingSplit[1:]
-			}
-		}
-		if len(searchingSplit) == 0 {
-			return true
-		}
-		return searchingSplit[0] == "*" && len(searchingSplit) == 1
+	if len(searchingDirs) == 0 {
+		return len(dirs) == 0
 	}
 
-	return filename == searching
+	for _, sd := range searchingDirs {
+		dir := dirs[0]
+		if !isTextMatch(dir, sd) {
+			return false
+		}
+		if len(dirs) == 1 {
+			return true
+		}
+		dirs = dirs[1:]
+	}
+	return true
+}
+
+func isTextMatch(text string, pattern string) bool {
+	if !strings.Contains(pattern, "*") {
+		return text == pattern
+	}
+
+	patternSplit := strings.Split(pattern, "*")
+	patternSplit = slices.DeleteFunc(patternSplit, func(v string) bool {
+		return v == ""
+	})
+	for _, ps := range patternSplit {
+		index := strings.Index(text, ps)
+		if index == -1 {
+			return false
+		}
+
+		textSplit := strings.Split(text, ps)
+		//TODO
+		if index == 0 {
+			textSplit = append([]string{"*", ps}, textSplit[1:]...)
+		} else {
+			textSplit = append([]string{"*", ps}, textSplit[1:]...)
+		}
+		text = strings.Join(textSplit, "")
+	}
+	fmt.Printf("%s %s\n", text, pattern)
+
+	return text == pattern
 }
