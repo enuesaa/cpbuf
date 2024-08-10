@@ -120,28 +120,22 @@ func isTextMatch(text string, pattern string) bool {
 		}
 		ps := patternSplit[0]
 		if ps == "*" {
-			if len(patternSplit) == 1 {
-				patternSplit = []string{}
-			} else {
-				patternSplit = patternSplit[1:]
-			}
 			anythingOk = true
+			patternSplit = slices.Delete(patternSplit, 0, 1)
 			continue
 		}
-		if strings.HasPrefix(text, ps) {
-			text = strings.Replace(text, ps, "", 1)
-			if len(patternSplit) == 1 {
-				patternSplit = []string{}
-			} else {
-				patternSplit = patternSplit[1:]
-			}
+		var found bool
+		text, found = strings.CutPrefix(text, ps)
+		if found {
 			anythingOk = false
+			patternSplit = slices.Delete(patternSplit, 0, 1)
 			continue
 		}
 		if !anythingOk {
 			return false
 		}
 		if len(text) == 1 {
+			text = ""
 			break
 		}
 		text = text[1:]
