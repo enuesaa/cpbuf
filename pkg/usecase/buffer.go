@@ -107,35 +107,48 @@ func isTextMatch(text string, pattern string) bool {
 		return text == pattern
 	}
 
-	patternSplit := strings.Split(pattern, "*")
+	pattern = strings.ReplaceAll(pattern, "*", "/*/")
+	patternSplit := strings.Split(pattern, "/")
 	patternSplit = slices.DeleteFunc(patternSplit, func(v string) bool {
 		return v == ""
 	})
-	lastMatched := -1
-	for _, ps := range patternSplit {
-		index := strings.Index(text, ps)
-		if index == -1 {
+
+	anythingOk := false
+	for {
+		if len(patternSplit) == 0 {
+			break
+		}
+		ps := patternSplit[0]
+		if ps == "*" {
+			if len(patternSplit) == 1 {
+				patternSplit = []string{}
+			} else {
+				patternSplit = patternSplit[1:]
+			}
+			anythingOk = true
+			continue
+		}
+		if strings.HasPrefix(text, ps) {
+			text = strings.Replace(text, ps, "", 1)
+			if len(patternSplit) == 1 {
+				patternSplit = []string{}
+			} else {
+				patternSplit = patternSplit[1:]
+			}
+			anythingOk = false
+			continue
+		}
+		if !anythingOk {
 			return false
 		}
-		newtext := make([]string, 0)
-		for c, char := range strings.Split(text, "") {
-			if lastMatched == -1 && c < index {
-				newtext = append(newtext, char)
-			} else if c < lastMatched {
-				newtext = append(newtext, char)
-			} else if c < index {
-				//
-			} else if c == index {
-				newtext = append(newtext, "*")
-				newtext = append(newtext, char)
-			} else {
-				newtext = append(newtext, char)
-			}
+		if len(text) == 1 {
+			break
 		}
-		text = strings.Join(newtext, "")
-		lastMatched = strings.Index(text, ps) + len(ps)
+		text = text[1:]
 	}
-	fmt.Printf("%s %s\n", text, pattern)
 
-	return text == pattern
+	if anythingOk {
+		return len(patternSplit) == 0
+	}
+	return len(patternSplit) == 0 && len(text) == 0
 }
