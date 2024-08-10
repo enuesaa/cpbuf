@@ -28,7 +28,7 @@ func SelectFileWithPrompt(repos repository.Repos) string {
 	return filename
 }
 
-func BufferFile(repos repository.Repos, filename string) error {
+func bufferFile(repos repository.Repos, filename string) error {
 	registry := task.NewRegistry(repos)
 	file := registry.GetWorkfile(filename)
 	if err := file.CheckExist(); err != nil {
@@ -61,7 +61,7 @@ func Buffer(repos repository.Repos, filename string) error {
 	}
 	for _, file := range files {
 		if isSearchingFile(file.GetFilename(), filename) {
-			if err := BufferFile(repos, file.GetFilename()); err != nil {
+			if err := bufferFile(repos, file.GetFilename()); err != nil {
 				return err
 			}	
 		}
@@ -73,20 +73,11 @@ func isSearchingFile(filename string, searching string) bool {
 	if searching == "." || searching == "*" {
 		return true
 	}
-	dirs := strings.Split(filename, "/")
-	dirs = slices.DeleteFunc(dirs, func(v string) bool {
-		return v == ""
-	})
-	searchingDirs := strings.Split(searching, "/")
-	searchingDirs = slices.DeleteFunc(searchingDirs, func(v string) bool {
-		return v == ""
-	})
+	dirs := splitRmEmpty(filename, "/")
+	searchingDirs := splitRmEmpty(searching, "/")
 
-	if len(dirs) == 0 {
-		return len(searchingDirs) == 0
-	}
-	if len(searchingDirs) == 0 {
-		return len(dirs) == 0
+	if len(dirs) == 0 || len(searchingDirs) == 0 {
+		return len(dirs) == 0 && len(searchingDirs) == 0
 	}
 
 	for _, sd := range searchingDirs {
@@ -95,7 +86,7 @@ func isSearchingFile(filename string, searching string) bool {
 			return false
 		}
 		if len(dirs) == 1 {
-			return true
+			break
 		}
 		dirs = dirs[1:]
 	}
@@ -108,10 +99,7 @@ func isTextMatch(text string, pattern string) bool {
 	}
 
 	pattern = strings.ReplaceAll(pattern, "*", "/*/")
-	patternSplit := strings.Split(pattern, "/")
-	patternSplit = slices.DeleteFunc(patternSplit, func(v string) bool {
-		return v == ""
-	})
+	patternSplit := splitRmEmpty(pattern, "/")
 
 	anythingOk := false
 	for {
@@ -145,4 +133,11 @@ func isTextMatch(text string, pattern string) bool {
 		return len(patternSplit) == 0
 	}
 	return len(patternSplit) == 0 && len(text) == 0
+}
+
+func splitRmEmpty(s string, sep string) []string {
+	split := strings.Split(s, sep)
+	return slices.DeleteFunc(split, func(v string) bool {
+		return v == ""
+	})
 }
