@@ -44,4 +44,4 @@ jobs:
         working-directory: tmp1
       - run: cpbuf p
         working-directory: tmp2
-      - run: diff tmp tmp2
+      - run: diff tmp1 tmp2
