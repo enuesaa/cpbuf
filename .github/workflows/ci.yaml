@@ -19,9 +19,12 @@ jobs:
       - run: go test ./... -cover -json > testresult.out
       - run: tparse -file=testresult.out -format markdown >> $GITHUB_STEP_SUMMARY
 
-  e2e-ubuntu:
+  e2e:
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/setup-go@v5
         with:
@@ -32,6 +35,8 @@ jobs:
           path: build
       - run: go install
         working-directory: build
+
+      - run: mkdir tmp1 tmp2
 
       - run: touch a.txt
         working-directory: tmp1
