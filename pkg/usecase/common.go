@@ -22,6 +22,9 @@ func DeleteBufDir(repos repository.Repos) error {
 
 func ListFilesInBufDir(repos repository.Repos) ([]task.Buffile, error) {
 	registry := task.NewRegistry(repos)
+	if !registry.IsBufDirExist() {
+		return nil, nil
+	}
 	return registry.ListFilesInBufDir()
 }
 
