@@ -12,18 +12,12 @@ func IsBufDirExist(repos repository.Repos) bool {
 
 func CreateBufDir(repos repository.Repos) error {
 	registry := task.NewRegistry(repos)
-	if !registry.IsBufDirExist() {
-		return registry.CreateBufDir()
-	}
-	return nil
+	return registry.CreateBufDir()
 }
 
 func DeleteBufDir(repos repository.Repos) error {
 	registry := task.NewRegistry(repos)
-	if registry.IsBufDirExist() {
-		return registry.DeleteBufDir()
-	}
-	return nil
+	return registry.DeleteBufDir()
 }
 
 func ListFilesInBufDir(repos repository.Repos) ([]task.Buffile, error) {
