@@ -71,10 +71,10 @@ func (srv *Registry) ListFilesInBufDir() ([]Buffile, error) {
 	list := make([]Buffile, 0)
 	for _, file := range files {
 		list = append(list, Buffile{
-			repos: srv.repos,
-			path: file,
+			repos:     srv.repos,
+			path:      file,
 			bufferDir: bufDir,
-			workDir: workDir,
+			workDir:   workDir,
 		})
 	}
 	return list, nil

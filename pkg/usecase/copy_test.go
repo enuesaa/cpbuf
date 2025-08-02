@@ -42,4 +42,3 @@ func TestBuffer(t *testing.T) {
 		"/.cpbuf/a/c",
 	})
 }
-

@@ -44,7 +44,7 @@ func Buffer(repos repository.Repos, filename string) error {
 		if filematch.Is(file.GetFilename(), filename) {
 			if err := bufferFile(repos, file.GetFilename()); err != nil {
 				return err
-			}	
+			}
 		}
 	}
 	return nil

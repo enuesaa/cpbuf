@@ -10,8 +10,8 @@ type FsMockRepository struct {
 	Files []string
 }
 
-//check file or dir existence with roughly logic.
-//if path is dir, please include dir path inside FsMockRepository.Files.
+// check file or dir existence with roughly logic.
+// if path is dir, please include dir path inside FsMockRepository.Files.
 func (repo *FsMockRepository) IsExist(path string) bool {
 	return slices.Contains(repo.Files, path)
 }

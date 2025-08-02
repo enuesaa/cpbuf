@@ -112,16 +112,16 @@ func TestCopyToWorkDir(t *testing.T) {
 
 	registry := NewRegistry(repos)
 	registry.CopyToWorkDir(Buffile{
-		repos: repos,
-		path: "/.cpbuf/a",
+		repos:     repos,
+		path:      "/.cpbuf/a",
 		bufferDir: "/.cpbuf",
-		workDir: "/workdir",
+		workDir:   "/workdir",
 	})
 	registry.CopyToWorkDir(Buffile{
-		repos: repos,
-		path: "/.cpbuf/b",
+		repos:     repos,
+		path:      "/.cpbuf/b",
 		bufferDir: "/.cpbuf",
-		workDir: "/workdir",
+		workDir:   "/workdir",
 	})
 
 	actual, _ := registry.ListFilesRecursively("/workdir")
