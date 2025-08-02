@@ -15,17 +15,17 @@ go install github.com/enuesaa/cpbuf@v0.0.17
 ```console
 $ cpbuf --help
 A CLI tool to copy and paste files.
-`cpbuf` uses buf-dir to save files temporarily.
+`cpbuf` uses a buf dir to hold files temporarily.
 
 Available Commands:
-  copy        Copy file to buf dir (alias: c)
-  list        List files in buf dir (alias: l)
-  paste       Paste files to current dir (alias: p)
-  reset       Clear copied files (alias: r)
+  copy        Copy files to the buf dir (alias: c)
+  list        List files in the buf dir (alias: l)
+  paste       Paste files into the current dir (alias: p)
+  reset       Clear all files in the buf dir (alias: r)
 
 Flags:
-      --help      Show help information
-      --version   Show version
+  -h, --help      Show help information
+  -v, --version   Show version
 ```
 
 ### Copy files
