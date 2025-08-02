@@ -17,15 +17,11 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 			keep, _ := cmd.Flags().GetBool("keep")
 			overwrite, _ := cmd.Flags().GetBool("overwrite")
 
-			if !usecase.IsBufDirExist(repos) {
-				fmt.Printf("No files were found.\n")
-				return nil
-			}
-			filenames, err := usecase.ListFilesInBufDir(repos)
+			hasFile, err := usecase.HasFileInBufDir(repos)
 			if err != nil {
 				return fmt.Errorf("failed to list files in buf dir.\n%s", err.Error())
 			}
-			if len(filenames) == 0 {
+			if !hasFile {
 				fmt.Printf("No files were found.\n")
 				if err := usecase.DeleteBufDir(repos); err != nil {
 					return fmt.Errorf("failed to clear buf dir.\n%s", err.Error())
