@@ -27,6 +27,29 @@ func SelectFileWithPrompt(repos repository.Repos) string {
 	return filename
 }
 
+// Copy a file to buf dir.
+//
+// `filename` accepts multiple format below:
+//   - aa.txt: copy aa.txt
+//   - .     : copy all files in the current dir
+//   - *     : copy all files in the current dir
+//   - *a.txt: copy all files which suffix is `a.txt` in the current dir
+func Buffer(repos repository.Repos, filename string) error {
+	registry := task.NewRegistry(repos)
+	files, err := registry.ListFilesInWorkDir()
+	if err != nil {
+		return err
+	}
+	for _, file := range files {
+		if filematch.Is(file.GetFilename(), filename) {
+			if err := bufferFile(repos, file.GetFilename()); err != nil {
+				return err
+			}	
+		}
+	}
+	return nil
+}
+
 func bufferFile(repos repository.Repos, filename string) error {
 	registry := task.NewRegistry(repos)
 	file := registry.GetWorkfile(filename)
@@ -42,28 +65,5 @@ func bufferFile(repos repository.Repos, filename string) error {
 		return err
 	}
 	fmt.Printf("copied: %s\n", file.GetFilename())
-	return nil
-}
-
-// Copy a file to buf dir.
-//
-// filename accepts multiple format below.
-// - aa.txt: copy aa.txt
-// - .     : copy all files in current dir
-// - *     : copy all files in current dir
-// - *a.txt: copy all files which ends with a.txt in current dir
-func Buffer(repos repository.Repos, filename string) error {
-	registry := task.NewRegistry(repos)
-	files, err := registry.ListFilesInWorkDir()
-	if err != nil {
-		return err
-	}
-	for _, file := range files {
-		if filematch.Is(file.GetFilename(), filename) {
-			if err := bufferFile(repos, file.GetFilename()); err != nil {
-				return err
-			}	
-		}
-	}
 	return nil
 }
