@@ -35,12 +35,12 @@ func CreatePasteCmd(repos repository.Repos) *cobra.Command {
 						fmt.Printf("removed: %s\n", filename)
 					}
 				} else {
-					fmt.Printf("These files already exist in this dir.\n")
+					fmt.Print("These files already exist in this dir:\n")
 					for _, filename := range conflictedFilenames {
-						fmt.Printf("- %s\n", filename)
+						fmt.Printf("  - %s\n", filename)
 					}
 					fmt.Printf("\n")
-					fmt.Printf("If you wish overwrite these files, please run command below.\n")
+					fmt.Printf("If you wish to overwrite them, run the following command:\n")
 					fmt.Printf("  cpbuf paste --overwrite\n")
 					return nil
 				}
