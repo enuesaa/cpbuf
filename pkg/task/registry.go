@@ -56,6 +56,9 @@ func (srv *Registry) DeleteBufDir() error {
 }
 
 func (srv *Registry) ListFilesInBufDir() ([]Buffile, error) {
+	if !srv.IsBufDirExist() {
+		return make([]Buffile, 0), nil
+	}
 	bufDir, err := srv.GetBufDirPath()
 	if err != nil {
 		return make([]Buffile, 0), err

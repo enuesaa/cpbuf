@@ -22,7 +22,6 @@ func CreateListCmd(repos repository.Repos) *cobra.Command {
 			if err != nil {
 				return fmt.Errorf("failed to list files in buf dir.\n%s", err.Error())
 			}
-
 			for _, file := range files {
 				fmt.Printf("%s\n", file.GetFilename())
 			}
