@@ -29,8 +29,7 @@ func ListFilesInBufDir(repos repository.Repos) ([]task.Buffile, error) {
 }
 
 func HasFileInBufDir(repos repository.Repos) (bool, error) {
-	registry := task.NewRegistry(repos)
-	list, err := registry.ListFilesInBufDir()
+	list, err := ListFilesInBufDir(repos)
 	if err != nil {
 		return false, err
 	}
