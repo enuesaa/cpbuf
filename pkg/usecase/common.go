@@ -20,6 +20,7 @@ func DeleteBufDir(repos repository.Repos) error {
 	return registry.DeleteBufDir()
 }
 
+// return empty slice if buf-dir does not exist
 func ListFilesInBufDir(repos repository.Repos) ([]task.Buffile, error) {
 	registry := task.NewRegistry(repos)
 	if !registry.IsBufDirExist() {
@@ -28,6 +29,7 @@ func ListFilesInBufDir(repos repository.Repos) ([]task.Buffile, error) {
 	return registry.ListFilesInBufDir()
 }
 
+// return false if buf-dir does not exist
 func HasFileInBufDir(repos repository.Repos) (bool, error) {
 	list, err := ListFilesInBufDir(repos)
 	if err != nil {
