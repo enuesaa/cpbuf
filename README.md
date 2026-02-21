@@ -8,7 +8,12 @@ While `cp` would copy and paste in one-time operation, `cpbuf` is stateful.
 
 ## Install
 ```bash
-go install github.com/enuesaa/cpbuf@v0.0.19
+go install github.com/enuesaa/cpbuf@v0.0.21
+```
+
+via brew
+```bash
+brew install enuesaa/tap/cpbuf
 ```
 
 ## Usage
