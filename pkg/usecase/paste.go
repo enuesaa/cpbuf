@@ -15,7 +15,11 @@ func ListConflictedFilenames(repos repository.Repos) ([]string, error) {
 		return list, err
 	}
 	for _, file := range files {
-		if file.IsTopLevel() {
+		isdir, err := file.IsDir()
+		if err != nil {
+			return list, err
+		}
+		if !isdir {
 			exists, err := file.IsSameFileExistInWorkDir()
 			if err != nil {
 				return list, err
