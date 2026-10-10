@@ -16,7 +16,7 @@ func main() {
 	app := &cobra.Command{
 		Use:     "cpbuf",
 		Short:   "A CLI tool to copy and paste files.\n`cpbuf` uses a buf dir to hold files temporarily.",
-		Version: "0.0.23",
+		Version: "0.0.24",
 	}
 
 	repos := repository.New()
